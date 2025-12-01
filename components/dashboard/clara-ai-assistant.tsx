@@ -84,41 +84,60 @@ export function ClaraAIAssistant() {
 
   return (
     <div className="fixed bottom-8 right-8 z-[1000]">
-      {!isOpen ? (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-purple-500 to-purple-700 shadow-lg flex items-center justify-center cursor-pointer hover:scale-105 transition-all group"
-          aria-label="Abrir assistente Clara"
-        >
-          <Sparkles size={24} className="text-white" />
-          <span className="absolute right-16 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-            Pergunte para Clara
-          </span>
-        </button>
-      ) : (
-        <div className="w-[400px] h-[600px] bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col opacity-0 animate-[fadeIn_0.3s_ease-out_forwards]">
-          {/* Header */}
-          <div className="bg-gradient-to-br from-purple-500 to-purple-700 p-5 rounded-t-2xl flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                <Sparkles size={20} className="text-purple-600" />
+      <div
+        className="relative transition-all duration-[400ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+        style={{
+          width: isOpen ? "400px" : "44px",
+          height: isOpen ? "600px" : "44px",
+          borderRadius: isOpen ? "1rem" : "9999px",
+          backgroundColor: isOpen ? "#FFFFFF" : "rgba(20, 184, 166, 0.3)",
+          backdropFilter: isOpen ? "none" : "blur(8px)",
+          boxShadow: isOpen
+            ? "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+            : "0 4px 12px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(20, 184, 166, 0.1)",
+          transform: isOpen ? "scale(1)" : "scale(1)",
+        }}
+      >
+        {!isOpen && (
+          <button
+            onClick={() => setIsOpen(true)}
+            className="absolute inset-0 flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95"
+            aria-label="Abrir assistente Clara"
+          >
+            <Sparkles className="text-teal-600" size={20} strokeWidth={1.5} />
+          </button>
+        )}
+        {isOpen && (
+          <div 
+            className="w-full h-full flex flex-col overflow-hidden"
+            style={{
+              opacity: isOpen ? 1 : 0,
+              pointerEvents: isOpen ? "auto" : "none",
+              transition: "opacity 0.3s ease-in 0.2s",
+            }}
+          >
+            {/* Header */}
+            <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                  <Sparkles className="text-teal-600" size={18} strokeWidth={1.5} />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-900">Clara</h3>
+                  <p className="text-xs text-gray-500">Assistente IA</p>
+                </div>
               </div>
-              <div>
-                <h3 className="text-white font-semibold">Clara</h3>
-                <p className="text-xs text-white/80">Assistente IA • Online</p>
-              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label="Fechar assistente"
+              >
+                <X size={18} />
+              </button>
             </div>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-white/20 rounded-lg p-1 transition-colors"
-              aria-label="Fechar assistente"
-            >
-              <X size={20} />
-            </button>
-          </div>
 
-          {/* Messages */}
-          <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-4 scroll-smooth">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3 scroll-smooth">
             {messages.length === 0 && (
               <div className="flex flex-col gap-2 mt-4">
                 <p className="text-xs text-gray-500 text-center mb-2">
@@ -144,16 +163,16 @@ export function ClaraAIAssistant() {
                 className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
               >
                 <div
-                  className={`max-w-[80%] p-3 rounded-2xl ${
+                  className={`max-w-[75%] px-3 py-2 rounded-lg ${
                     msg.type === "user"
-                      ? "bg-purple-600 text-white rounded-br-sm"
-                      : "bg-white text-gray-900 border border-gray-200 rounded-bl-sm"
+                      ? "bg-teal-600 text-white"
+                      : "bg-white text-gray-900 border border-gray-200"
                   }`}
                 >
-                  <p className="text-sm">{msg.message}</p>
+                  <p className="text-sm leading-relaxed">{msg.message}</p>
                   <span
                     className={`text-xs mt-1 block ${
-                      msg.type === "user" ? "text-purple-200" : "text-gray-400"
+                      msg.type === "user" ? "text-teal-200" : "text-gray-400"
                     }`}
                   >
                     {msg.timestamp}
@@ -164,18 +183,18 @@ export function ClaraAIAssistant() {
 
             {isTyping && (
               <div className="flex justify-start">
-                <div className="bg-white border border-gray-200 rounded-2xl rounded-bl-sm p-4">
+                <div className="bg-white border border-gray-200 rounded-lg px-3 py-2">
                   <div className="flex gap-1">
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "0ms" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "150ms" }}
                     ></div>
                     <div
-                      className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
                       style={{ animationDelay: "300ms" }}
                     ></div>
                   </div>
@@ -184,31 +203,32 @@ export function ClaraAIAssistant() {
             )}
           </div>
 
-          {/* Input */}
-          <div className="p-4 border-t border-gray-200 bg-white rounded-b-2xl">
-            <div className="relative">
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onKeyPress={(e) =>
-                  e.key === "Enter" && sendMessage(inputValue)
-                }
-                placeholder="Digite sua pergunta..."
-                className="w-full border border-gray-200 rounded-xl px-4 py-3 pr-12 focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm outline-none"
-              />
-              <button
-                onClick={() => sendMessage(inputValue)}
-                disabled={!inputValue.trim()}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-purple-600 hover:text-purple-700 disabled:text-gray-300 transition-colors"
-                aria-label="Enviar mensagem"
-              >
-                <Send size={20} />
-              </button>
+            {/* Input */}
+            <div className="px-4 py-3 border-t border-gray-100 bg-white">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  onKeyPress={(e) =>
+                    e.key === "Enter" && sendMessage(inputValue)
+                  }
+                  placeholder="Digite sua pergunta..."
+                  className="w-full border border-gray-200 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm outline-none bg-gray-50 focus:bg-white transition-colors"
+                />
+                <button
+                  onClick={() => sendMessage(inputValue)}
+                  disabled={!inputValue.trim()}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-teal-600 hover:text-teal-700 disabled:text-gray-300 transition-colors"
+                  aria-label="Enviar mensagem"
+                >
+                  <Send size={18} />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 }
