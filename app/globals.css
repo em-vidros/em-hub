@@ -1,0 +1,189 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  /* Modern SaaS Clean Aesthetic - Radius ~12px */
+  --radius: 0.75rem;
+
+  /* Main app background (#F9FAFB) and primary text (#111827) */
+  --background: 210 40% 98%;
+  --foreground: 220 39% 11%;
+
+  /* Cards: White Surface */
+  --card: 0 0% 100%;
+  --card-foreground: 220 39% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 39% 11%;
+
+  /* Brand Primary: #111827 (Dark Navy/Black) */
+  --primary: 220 39% 11%;
+  --primary-foreground: 0 0% 98%;
+
+  /* Secondary: #F3F4F6 */
+  --secondary: 210 20% 96%;
+  --secondary-foreground: 220 39% 11%;
+
+  /* Muted: #F3F4F6 */
+  --muted: 210 20% 96%;
+  --muted-foreground: 220 9% 46%; /* #6B7280 */
+
+  --accent: 210 20% 96%;
+  --accent-foreground: 220 39% 11%;
+
+  /* Error: #EF4444 */
+  --destructive: 0 84% 60%;
+
+  /* Borders: #F3F4F6 (much lighter, almost invisible) */
+  --border: 210 20% 96%;
+  --input: 210 20% 96%;
+  --ring: 220 39% 11%;
+
+  /* Chart Colors - Professional Palette */
+  --chart-1: 220 39% 11%; /* Brand Primary for main lines */
+  --chart-2: 158 64% 52%; /* Success Green */
+  --chart-3: 38 92% 50%;  /* Warning Orange */
+  --chart-4: 262 83% 58%; /* Purple */
+  --chart-5: 0 84% 60%;   /* Red */
+
+  /* Sidebar: #F0EFEA (Warm Light Gray) */
+  --sidebar: 60 14% 93%;
+  --sidebar-foreground: 220 39% 11%;
+  --sidebar-primary: 220 39% 11%;
+  --sidebar-primary-foreground: 0 0% 98%;
+  --sidebar-accent: 0 0% 100%; /* White accent on hover for sidebar */
+  --sidebar-accent-foreground: 220 39% 11%;
+  --sidebar-border: 210 20% 96%; /* #F3F4F6 */
+  --sidebar-ring: 220 39% 11%;
+}
+
+.dark {
+  /* Dark mode mirrors light mode structure but inverted where appropriate,
+     although the prompt specified a specific light theme. Keeping dark mode functional. */
+  --radius: 0.75rem;
+
+  --background: 224 71% 4%;
+  --foreground: 210 40% 98%;
+
+  --card: 224 71% 4%;
+  --card-foreground: 210 40% 98%;
+
+  --popover: 224 71% 4%;
+  --popover-foreground: 210 40% 98%;
+
+  --primary: 210 40% 98%;
+  --primary-foreground: 222 47% 11%;
+
+  --secondary: 217 19% 27%;
+  --secondary-foreground: 210 40% 98%;
+
+  --muted: 217 19% 27%;
+  --muted-foreground: 215 20% 65%;
+
+  --accent: 217 19% 27%;
+  --accent-foreground: 210 40% 98%;
+
+  --destructive: 0 62% 30%;
+
+  --border: 217 19% 27%;
+  --input: 217 19% 27%;
+  --ring: 212 19% 83%;
+
+  --chart-1: 220 70% 50%;
+  --chart-2: 160 60% 45%;
+  --chart-3: 30 80% 55%;
+  --chart-4: 280 65% 60%;
+  --chart-5: 340 75% 55%;
+
+  --sidebar: 224 71% 4%;
+  --sidebar-foreground: 240 5% 64.9%;
+  --sidebar-primary: 224 64% 33%;
+  --sidebar-primary-foreground: 0 0% 100%;
+  --sidebar-accent: 224 71% 4%;
+  --sidebar-accent-foreground: 240 5% 64.9%;
+  --sidebar-border: 224 71% 4%;
+  --sidebar-ring: 217.2 91.2% 59.8%;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    overflow: hidden; /* Prevent double scrollbars */
+  }
+
+  /* Custom scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--muted-foreground) / 0.3);
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
