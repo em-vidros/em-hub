@@ -14,6 +14,14 @@ export interface EstoqueDashboardData {
     minimo: number;
   }[];
   skusCriticos: SkuEstoqueResumo[];
+   coberturaPorCategoria: {
+    categoria: string;
+    diasCobertura: number;
+  }[];
+  idadeEstoqueFaixas: {
+    faixaDias: string;
+    percentualVolume: number;
+  }[];
 }
 
 export function getEstoqueMockData(
@@ -88,6 +96,18 @@ export function getEstoqueMockData(
         minimo: 2500,
         maximo: 8000,
       },
+    ],
+    coberturaPorCategoria: [
+      { categoria: "Templados", diasCobertura: 38 },
+      { categoria: "Laminados", diasCobertura: 42 },
+      { categoria: "Insulados", diasCobertura: 35 },
+      { categoria: "Acessórios", diasCobertura: 48 },
+    ],
+    idadeEstoqueFaixas: [
+      { faixaDias: "0-30 dias", percentualVolume: 46 },
+      { faixaDias: "31-60 dias", percentualVolume: 32 },
+      { faixaDias: "61-90 dias", percentualVolume: 14 },
+      { faixaDias: "91+ dias", percentualVolume: 8 },
     ],
   };
 }

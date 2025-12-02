@@ -20,6 +20,15 @@ export interface DiretoriaDashboardData {
   eficienciaPorMes: TimeSeriesPoint[];
   principaisClientes: ClienteResumo[];
   produtosMaisLucrativos: ProdutoResumo[];
+  despesasPorTipo: {
+    tipo: string;
+    valor: number;
+  }[];
+  fluxoCaixaMensal: TimeSeriesPoint[];
+  endividamentoPorPrazo: {
+    prazo: string;
+    saldo: number;
+  }[];
 }
 
 export function getDiretoriaMockData(
@@ -114,6 +123,52 @@ export function getDiretoriaMockData(
         nome: "Box de banho sob medida",
         faturamentoMensal: 610000,
         margemPercentual: 21,
+      },
+    ],
+    despesasPorTipo: [
+      {
+        tipo: "Matéria-prima (chapas de vidro)",
+        valor: 1450000,
+      },
+      {
+        tipo: "Mão de obra direta",
+        valor: 620000,
+      },
+      {
+        tipo: "Energia e utilidades dos fornos",
+        valor: 430000,
+      },
+      {
+        tipo: "Logística e fretes",
+        valor: 310000,
+      },
+      {
+        tipo: "Despesas comerciais e marketing",
+        valor: 270000,
+      },
+      {
+        tipo: "Despesas administrativas",
+        valor: 210000,
+      },
+    ],
+    fluxoCaixaMensal: [
+      { date: "2025-01-01", value: 520000 },
+      { date: "2025-02-01", value: 480000 },
+      { date: "2025-03-01", value: 560000 },
+      { date: "2025-04-01", value: 590000 },
+    ],
+    endividamentoPorPrazo: [
+      {
+        prazo: "Curto prazo (até 12 meses)",
+        saldo: 1800000,
+      },
+      {
+        prazo: "Médio prazo (13 a 36 meses)",
+        saldo: 2400000,
+      },
+      {
+        prazo: "Longo prazo (acima de 36 meses)",
+        saldo: 1200000,
       },
     ],
   };

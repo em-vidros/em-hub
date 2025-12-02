@@ -2,6 +2,8 @@ import { KpiCard } from "@/components/dashboard/kpi-card";
 import { CategoryBarChart } from "@/components/dashboard/category-bar-chart";
 import { TimeSeriesChart } from "@/components/dashboard/time-series-chart";
 import { HistogramChart } from "@/components/dashboard/histogram-chart";
+import { SmallMultipleTimeSeries } from "@/components/dashboard/small-multiple-time-series";
+import { JointDistributionChart } from "@/components/dashboard/joint-distribution-chart";
 import { SectionCard } from "@/components/dashboard/section-card";
 import {
   Table,
@@ -104,6 +106,66 @@ export default async function ComercialPage() {
               ))}
             </TableBody>
           </Table>
+        </SectionCard>
+      </section>
+
+      <section className="grid gap-4 md:grid-cols-2">
+        <SectionCard
+          title="Funil de vendas"
+          subtitle="Conversão por etapa e valor em pipeline"
+        >
+          <CategoryBarChart
+            data={data.funilVendas.map((etapa) => ({
+              label: etapa.etapa,
+              value: etapa.taxaConversao,
+              secondaryValue:
+                (etapa.valorTotal / data.kpis.vendasTotais.value) * 100,
+            }))}
+            suffix="%"
+          />
+          <p className="mt-2 text-xs text-gray-500">
+            A primeira barra mostra a taxa de conversão da etapa; a segunda, a
+            participação do valor em pipeline em relação às vendas totais do
+            período. Isso ajuda a priorizar onde focar esforços comerciais.
+          </p>
+        </SectionCard>
+        <SectionCard
+          title="Joint distribution clientes"
+          subtitle="Faturamento mensal × margem percentual"
+        >
+          <JointDistributionChart
+            points={data.principaisClientes.map((c) => ({
+              x: c.faturamentoMensal,
+              y: c.margemPercentual,
+              label: c.nome,
+            }))}
+            xLabel="Faturamento mensal (R$)"
+            yLabel="Margem (%)"
+          />
+        </SectionCard>
+      </section>
+
+      <section>
+        <SectionCard
+          title="Receita mensal por canal"
+          subtitle="Small multiples comparando a evolução de cada canal"
+        >
+          <SmallMultipleTimeSeries
+            series={Array.from(
+              new Map(
+                data.vendasCanalMes.map((item) => [
+                  item.canal,
+                  data.vendasCanalMes.filter((i) => i.canal === item.canal),
+                ]),
+              ).entries(),
+            ).map(([canal, pontos]) => ({
+              name: canal,
+              points: (pontos as typeof data.vendasCanalMes).map((p) => ({
+                label: p.mes,
+                value: p.valor,
+              })),
+            }))}
+          />
         </SectionCard>
       </section>
     </div>

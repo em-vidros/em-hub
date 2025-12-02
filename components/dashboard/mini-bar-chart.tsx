@@ -1,3 +1,5 @@
+import { CHART_COLORS } from "./chart-theme";
+
 interface MiniBarChartProps {
   values: number[];
 }
@@ -10,8 +12,11 @@ export function MiniBarChart({ values }: MiniBarChartProps) {
       {values.map((value, index) => (
         <div
           key={index}
-          className="flex-1 rounded-sm bg-[hsl(var(--chart-1))]/20"
-          style={{ height: `${(value / max) * 100}%` }}
+          className="flex-1 rounded-sm"
+          style={{
+            height: `${(value / max) * 100}%`,
+            backgroundColor: `${CHART_COLORS.primary}33`,
+          }}
         />
       ))}
     </div>

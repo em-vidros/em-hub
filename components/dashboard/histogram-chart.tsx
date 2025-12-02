@@ -3,7 +3,6 @@
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Line,
   ResponsiveContainer,
   Tooltip,
@@ -16,6 +15,13 @@ import type {
   HistogramBin,
   HistogramStats,
 } from "@/lib/analytics-client";
+
+import {
+  CHART_COLORS,
+  CHART_STROKE_WIDTH,
+  ChartContainer,
+  DefaultCartesianGrid,
+} from "./chart-theme";
 
 interface HistogramChartProps {
   values?: number[];
@@ -66,18 +72,13 @@ export function HistogramChart({
   const median = stats?.median;
 
   return (
-    <div className="h-56 w-full">
+    <ChartContainer>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={computedBuckets}
           margin={{ left: 8, right: 8, top: 8, bottom: 40 }}
         >
-          <CartesianGrid
-            strokeDasharray="3 3"
-            vertical={false}
-            stroke="hsl(var(--border))"
-            opacity={0.3}
-          />
+          <DefaultCartesianGrid />
           <XAxis
             dataKey="label"
             tickLine={false}
@@ -93,10 +94,15 @@ export function HistogramChart({
             tickMargin={4}
           />
           <Tooltip
+            contentStyle={{ color: "#000" }}
             formatter={(value: number) => `${value} pedidos`}
             labelFormatter={(label) => `${label} ${unit ?? ""}`}
           />
-          <Bar dataKey="value" fill="hsl(var(--chart-2))" radius={[4, 4, 0, 0]} />
+          <Bar
+            dataKey="value"
+            fill={CHART_COLORS.primary}
+            radius={[4, 4, 0, 0]}
+          />
           {density && density.length ? (
             <Line
               type="monotone"
@@ -105,8 +111,8 @@ export function HistogramChart({
               xAxisId={0}
               yAxisId={0}
               dot={false}
-              stroke="hsl(var(--chart-2))"
-              strokeWidth={2}
+              stroke={CHART_COLORS.secondary}
+              strokeWidth={CHART_STROKE_WIDTH}
             />
           ) : null}
         </BarChart>
@@ -128,7 +134,7 @@ export function HistogramChart({
           </>
         ) : null}
       </p>
-    </div>
+    </ChartContainer>
   );
 }
 

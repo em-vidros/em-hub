@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  CartesianGrid,
   Legend,
   Line,
   ResponsiveContainer,
@@ -13,6 +12,13 @@ import {
   ZAxis,
   Cell,
 } from "recharts";
+
+import {
+  CHART_COLORS,
+  CHART_STROKE_WIDTH,
+  ChartContainer,
+  DefaultCartesianGrid,
+} from "./chart-theme";
 
 interface ScatterPoint {
   x: number;
@@ -39,9 +45,9 @@ interface ScatterChartProps {
 }
 
 const STATUS_COLOR: Record<string, string> = {
-  ok: "hsl(var(--chart-1))",
-  alerta: "hsl(var(--chart-4))",
-  critico: "hsl(var(--chart-5))",
+  ok: CHART_COLORS.secondary,
+  alerta: CHART_COLORS.primary,
+  critico: "#F97373",
 };
 
 export function AdvancedScatterChart({
@@ -55,10 +61,10 @@ export function AdvancedScatterChart({
   yLabel,
 }: ScatterChartProps) {
   return (
-    <div className="h-64 w-full">
+    <ChartContainer className="h-64">
       <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+          <DefaultCartesianGrid />
           <XAxis
             type="number"
             dataKey="x"
@@ -101,8 +107,8 @@ export function AdvancedScatterChart({
               xAxisId={0}
               yAxisId={0}
               dot={false}
-              stroke="hsl(var(--chart-1))"
-              strokeWidth={2}
+              stroke={CHART_COLORS.secondary}
+              strokeWidth={CHART_STROKE_WIDTH}
             />
           ) : null}
           <Scatter data={data}>
@@ -113,7 +119,7 @@ export function AdvancedScatterChart({
                 fill={
                   entry.category && STATUS_COLOR[entry.category]
                     ? STATUS_COLOR[entry.category]
-                    : "hsl(var(--primary))"
+                    : CHART_COLORS.primary
                 }
               />
             ))}
@@ -148,7 +154,7 @@ export function AdvancedScatterChart({
           </>
         ) : null}
       </p>
-    </div>
+    </ChartContainer>
   );
 }
 

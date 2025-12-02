@@ -10,6 +10,19 @@ import {
   Package,
   ChevronLeft,
   ChevronRight,
+  TrendingUp,
+  Gauge,
+  Shield,
+  DollarSign,
+  CheckCircle2,
+  Users,
+  Boxes,
+  Workflow,
+  AlertTriangle,
+  BarChart3,
+  Target,
+  Zap,
+  UserRound,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -18,11 +31,45 @@ import { Input } from "@/components/ui/input";
 import { clearAuthFlag, isAuthenticated } from "@/lib/auth";
 import { ClaraAIAssistant } from "@/components/dashboard/clara-ai-assistant";
 
-const NAV_ITEMS = [
-  { href: "/diretoria", label: "Diretoria", icon: LayoutDashboard },
-  { href: "/producao", label: "Produção", icon: Activity },
-  { href: "/comercial", label: "Comercial", icon: PieChart },
-  { href: "/estoque", label: "Estoque", icon: Package },
+interface NavSection {
+  title?: string;
+  items: Array<{ href: string; label: string; icon: any }>;
+}
+
+const NAV_SECTIONS: NavSection[] = [
+  {
+    items: [
+      { href: "/", label: "Visão Geral", icon: LayoutDashboard },
+    ],
+  },
+  {
+    title: "Operacional",
+    items: [
+      { href: "/diretoria", label: "Diretoria", icon: UserRound },
+      { href: "/producao", label: "Produção", icon: Activity },
+      { href: "/comercial", label: "Comercial", icon: PieChart },
+      { href: "/estoque", label: "Estoque", icon: Package },
+    ],
+  },
+  {
+    title: "Insights",
+    items: [
+      { href: "/performance", label: "Performance", icon: TrendingUp },
+      { href: "/eficiencia", label: "Eficiência", icon: Gauge },
+      { href: "/seguranca", label: "Segurança", icon: Shield },
+      { href: "/custos", label: "Custos", icon: DollarSign },
+      { href: "/qualidade", label: "Qualidade", icon: CheckCircle2 },
+    ],
+  },
+  {
+    title: "Análises",
+    items: [
+      { href: "/clientes", label: "Clientes", icon: Users },
+      { href: "/produtos", label: "Produtos", icon: Boxes },
+      { href: "/processos", label: "Processos", icon: Workflow },
+      { href: "/riscos", label: "Riscos", icon: AlertTriangle },
+    ],
+  },
 ];
 
 export default function DashboardLayout({
@@ -50,11 +97,11 @@ export default function DashboardLayout({
       <div className="flex h-screen relative">
         <aside
           data-collapsed={isCollapsed ? "true" : "false"}
-          className={`flex flex-col overflow-y-auto transition-all duration-300 ease-in-out ${
-            isCollapsed ? "w-16 p-2" : "w-60 p-6"
+          className={`flex flex-col transition-all duration-300 ease-in-out text-[11px] md:text-xs ${
+            isCollapsed ? "w-16 p-2" : "w-56 p-4"
           }`}
         >
-        <div className={`mb-8 flex items-center ${isCollapsed ? "justify-center" : ""} px-2`}>
+        <div className={`mb-6 flex items-center ${isCollapsed ? "justify-center" : ""} px-2`}>
           <div className="flex items-center gap-3">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold shadow-sm flex-shrink-0">
               EM
@@ -68,30 +115,48 @@ export default function DashboardLayout({
           </div>
         </div>
         
-        <nav className="flex-1 space-y-1">
-          {NAV_ITEMS.map((item) => {
-            const Icon = item.icon;
-            const active = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={active ? "page" : undefined}
-                className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all outline-none ring-ring/50 focus-visible:ring-2 ${
-                  active
-                    ? "bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
-                    : "text-gray-500 hover:bg-white/50 hover:text-gray-900"
-                }`}
-              >
-                <Icon className={`w-[18px] h-[18px] transition-colors ${active ? "text-gray-900" : "text-gray-500 group-hover:text-gray-900"}`} strokeWidth={2} />
-                {!isCollapsed && <span>{item.label}</span>}
-              </Link>
-            );
-          })}
+        <nav className="flex-1 space-y-3">
+          {NAV_SECTIONS.map((section, sectionIdx) => (
+            <div key={sectionIdx} className="space-y-0.5">
+              {section.title && !isCollapsed && (
+                <div className="px-3 py-0.5">
+                  <p className="text-xs font-medium text-gray-400">
+                    {section.title}
+                  </p>
+                </div>
+              )}
+              {section.items.map((item) => {
+                const Icon = item.icon;
+                const active = pathname === item.href || (item.href === "/" && pathname === "/");
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={active ? "page" : undefined}
+                    className={`group flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all outline-none ring-ring/50 focus-visible:ring-2 ${
+                      active
+                        ? "bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
+                        : "text-gray-500 hover:bg-white/50 hover:text-gray-900"
+                    }`}
+                  >
+                    <Icon
+                      className={`w-[18px] h-[18px] transition-colors ${
+                        active
+                          ? "text-gray-900"
+                          : "text-gray-500 group-hover:text-gray-900"
+                      }`}
+                      strokeWidth={2.3}
+                    />
+                    {!isCollapsed && <span>{item.label}</span>}
+                  </Link>
+                );
+              })}
+            </div>
+          ))}
         </nav>
         
-        <div className="mt-auto pt-6">
-          <div className={`flex items-center gap-3 rounded-xl border border-gray-100 bg-white/50 p-2 ${isCollapsed ? "justify-center" : ""}`}>
+        <div className="mt-auto pt-4">
+          <div className={`flex items-center gap-2 rounded-xl border border-gray-100 bg-white/50 p-2 ${isCollapsed ? "justify-center" : ""}`}>
             <Avatar className="h-8 w-8 rounded-lg border border-gray-100 flex-shrink-0">
               <AvatarFallback className="rounded-lg bg-gray-100 text-xs font-medium text-gray-500">EV</AvatarFallback>
           </Avatar>
@@ -149,7 +214,7 @@ export default function DashboardLayout({
         )}
       </button>
 
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-white rounded-l-3xl shadow-[0_0_0_1px_rgba(0,0,0,0.05),0_10px_30px_rgba(0,0,0,0.08)] ml-0">
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-white rounded-l-3xl shadow-[0_0_0_1px_rgba(0,0,0,0.05),0_10px_30px_rgba(0,0,0,0.08)] ml-2">
         <header className="flex h-14 items-center justify-between border-b border-gray-100 bg-white px-6 rounded-tl-3xl">
           <div className="flex items-center gap-4">
             <h1 className="text-sm font-medium text-gray-900">Visão Geral</h1>

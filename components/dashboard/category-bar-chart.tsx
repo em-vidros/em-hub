@@ -3,7 +3,6 @@
 import {
   Bar,
   BarChart,
-  CartesianGrid,
   Legend,
   ResponsiveContainer,
   Tooltip,
@@ -11,27 +10,28 @@ import {
   YAxis,
 } from "recharts";
 
+import {
+  CHART_COLORS,
+  CHART_STROKE_WIDTH,
+  ChartContainer,
+  DefaultCartesianGrid,
+} from "./chart-theme";
+
 interface CategoryBarChartProps {
-  data: { label: string; value: number }[];
+  data: { label: string; value: number; secondaryValue?: number }[];
   suffix?: string;
 }
 
 export function CategoryBarChart({ data, suffix }: CategoryBarChartProps) {
   return (
-    <div className="h-56 w-full">
+    <ChartContainer>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
           margin={{ left: 8, right: 8, top: 8, bottom: 32 }}
           barCategoryGap={24}
         >
-          <defs>
-            <linearGradient id="categoryBar" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="hsl(var(--chart-1))" stopOpacity={0.9} />
-              <stop offset="100%" stopColor="hsl(var(--chart-1))" stopOpacity={0.7} />
-            </linearGradient>
-          </defs>
-          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="hsl(var(--border))" opacity={0.3} />
+          <DefaultCartesianGrid />
           <XAxis
             dataKey="label"
             tickLine={false}
@@ -57,11 +57,7 @@ export function CategoryBarChart({ data, suffix }: CategoryBarChartProps) {
           />
           <Tooltip
             cursor={{ fill: "hsl(var(--muted)/0.5)" }}
-            contentStyle={{
-              borderRadius: "8px",
-              border: "1px solid hsl(var(--border))",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-            }}
+            contentStyle={{ color: "#000" }}
             formatter={(value: number) =>
               suffix ? `${value.toFixed(1)}${suffix}` : value.toLocaleString("pt-BR")
             }
@@ -69,18 +65,27 @@ export function CategoryBarChart({ data, suffix }: CategoryBarChartProps) {
           />
           <Bar
             dataKey="value"
-            fill="url(#categoryBar)"
+            fill={CHART_COLORS.primary}
             radius={[4, 4, 0, 0]}
             maxBarSize={48}
             isAnimationActive
           />
+          {data.some((d) => typeof d.secondaryValue === "number") ? (
+            <Bar
+              dataKey="secondaryValue"
+              fill={CHART_COLORS.secondary}
+              radius={[4, 4, 0, 0]}
+              maxBarSize={48}
+              isAnimationActive
+            />
+          ) : null}
           <Legend
             formatter={() => <span className="text-xs font-medium text-gray-500">Volume por categoria</span>}
             wrapperStyle={{ bottom: 0 }}
           />
         </BarChart>
       </ResponsiveContainer>
-    </div>
+    </ChartContainer>
   );
 }
 

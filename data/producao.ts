@@ -24,6 +24,15 @@ export interface ProducaoDashboardData {
     diaSemana: string;
     volumeM2: number;
   }[];
+  oeePorLinhaMes: {
+    linha: string;
+    mes: string;
+    oee: number;
+  }[];
+  refugosPorCausa: {
+    causa: string;
+    percentual: number;
+  }[];
 }
 
 export function getProducaoMockData(
@@ -109,6 +118,26 @@ export function getProducaoMockData(
       { turno: "3º turno", diaSemana: "Qua", volumeM2: 7800 },
       { turno: "3º turno", diaSemana: "Qui", volumeM2: 9000 },
       { turno: "3º turno", diaSemana: "Sex", volumeM2: 8800 },
+    ],
+    oeePorLinhaMes: [
+      { linha: "Forno Têmpera A", mes: "Jan", oee: 83 },
+      { linha: "Forno Têmpera A", mes: "Fev", oee: 84 },
+      { linha: "Forno Têmpera A", mes: "Mar", oee: 86 },
+      { linha: "Forno Têmpera A", mes: "Abr", oee: 87 },
+      { linha: "Forno Têmpera B", mes: "Jan", oee: 78 },
+      { linha: "Forno Têmpera B", mes: "Fev", oee: 79 },
+      { linha: "Forno Têmpera B", mes: "Mar", oee: 80 },
+      { linha: "Forno Têmpera B", mes: "Abr", oee: 81 },
+      { linha: "Laminação", mes: "Jan", oee: 81 },
+      { linha: "Laminação", mes: "Fev", oee: 82 },
+      { linha: "Laminação", mes: "Mar", oee: 83 },
+      { linha: "Laminação", mes: "Abr", oee: 84 },
+    ],
+    refugosPorCausa: [
+      { causa: "Quebra na têmpera", percentual: 34 },
+      { causa: "Riscos e manchas", percentual: 27 },
+      { causa: "Desalinhamento na laminação", percentual: 22 },
+      { causa: "Corte fora de medida", percentual: 17 },
     ],
   };
 }

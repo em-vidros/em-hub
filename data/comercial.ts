@@ -20,10 +20,22 @@ export interface ComercialDashboardData {
   }[];
   principaisClientes: ClienteResumo[];
   distribuicaoTicket: number[];
+  distribuicaoTicketAnterior: number[];
   vendasCanalMes: {
     canal: string;
     mes: string;
     valor: number;
+  }[];
+  funilVendas: {
+    etapa: string;
+    oportunidades: number;
+    valorTotal: number;
+    taxaConversao: number;
+  }[];
+  mixProdutosCanal: {
+    canal: string;
+    categoriaProduto: string;
+    percentualFaturamento: number;
   }[];
 }
 
@@ -99,6 +111,10 @@ export function getComercialMockData(
       8000, 9500, 12000, 15000, 16000, 17500, 18000, 19000, 21000, 23000, 26000,
       28000,
     ],
+    distribuicaoTicketAnterior: [
+      7000, 8200, 10500, 13000, 14200, 15800, 16200, 17200, 19000, 20500, 23000,
+      25000,
+    ],
     vendasCanalMes: [
       { canal: "Construtoras", mes: "Jan", valor: 360000 },
       { canal: "Construtoras", mes: "Fev", valor: 370000 },
@@ -116,6 +132,41 @@ export function getComercialMockData(
       { canal: "Varejo", mes: "Fev", valor: 95000 },
       { canal: "Varejo", mes: "Mar", valor: 98000 },
       { canal: "Varejo", mes: "Abr", valor: 100000 },
+    ],
+    funilVendas: [
+      {
+        etapa: "Prospecção",
+        oportunidades: 140,
+        valorTotal: 8200000,
+        taxaConversao: 100,
+      },
+      {
+        etapa: "Proposta enviada",
+        oportunidades: 86,
+        valorTotal: 6100000,
+        taxaConversao: 61,
+      },
+      {
+        etapa: "Negociação",
+        oportunidades: 48,
+        valorTotal: 4200000,
+        taxaConversao: 34,
+      },
+      {
+        etapa: "Fechado ganho",
+        oportunidades: 27,
+        valorTotal: 2600000,
+        taxaConversao: 19,
+      },
+    ],
+    mixProdutosCanal: [
+      { canal: "Construtoras", categoriaProduto: "Templados", percentualFaturamento: 46 },
+      { canal: "Construtoras", categoriaProduto: "Laminados", percentualFaturamento: 32 },
+      { canal: "Construtoras", categoriaProduto: "Insulados", percentualFaturamento: 22 },
+      { canal: "Vidraçarias", categoriaProduto: "Templados", percentualFaturamento: 38 },
+      { canal: "Vidraçarias", categoriaProduto: "Laminados", percentualFaturamento: 29 },
+      { canal: "Vidraçarias", categoriaProduto: "Insulados", percentualFaturamento: 18 },
+      { canal: "Vidraçarias", categoriaProduto: "Acessórios", percentualFaturamento: 15 },
     ],
   };
 }

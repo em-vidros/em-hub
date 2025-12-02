@@ -3,13 +3,14 @@
 import {
   ResponsiveContainer,
   ScatterChart,
-  CartesianGrid,
   XAxis,
   YAxis,
   Tooltip,
   Scatter,
   Cell,
 } from "recharts";
+
+import { ChartContainer, DefaultCartesianGrid, CHART_COLORS } from "./chart-theme";
 
 interface HeatmapPoint {
   x: string;
@@ -25,11 +26,28 @@ interface HeatmapChartProps {
 
 function getColor(value: number, min: number, max: number) {
   const ratio = (value - min) / (max - min || 1);
-  // Interpolação simples entre azul claro e azul escuro
-  const light = 230;
-  const dark = 30;
-  const channel = Math.round(light + (dark - light) * ratio);
-  return `rgb(${channel}, ${channel + 20}, 255)`;
+  // Interpolação simples entre as duas cores padrão
+  const start = CHART_COLORS.primary;
+  const end = CHART_COLORS.secondary;
+
+  const hexToRgb = (hex: string) => {
+    const cleaned = hex.replace("#", "");
+    const bigint = parseInt(cleaned, 16);
+    return {
+      r: (bigint >> 16) & 255,
+      g: (bigint >> 8) & 255,
+      b: bigint & 255,
+    };
+  };
+
+  const s = hexToRgb(start);
+  const e = hexToRgb(end);
+
+  const r = Math.round(s.r + (e.r - s.r) * ratio);
+  const g = Math.round(s.g + (e.g - s.g) * ratio);
+  const b = Math.round(s.b + (e.b - s.b) * ratio);
+
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
 export function HeatmapChart({ data, xLabel, yLabel }: HeatmapChartProps) {
@@ -49,10 +67,10 @@ export function HeatmapChart({ data, xLabel, yLabel }: HeatmapChartProps) {
   const max = Math.max(...values);
 
   return (
-    <div className="h-64 w-full">
+    <ChartContainer className="h-64">
       <ResponsiveContainer width="100%" height="100%">
         <ScatterChart margin={{ top: 16, right: 16, bottom: 40, left: 40 }}>
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+          <DefaultCartesianGrid />
           <XAxis
             type="number"
             dataKey="xi"
@@ -109,7 +127,7 @@ export function HeatmapChart({ data, xLabel, yLabel }: HeatmapChartProps) {
         dia da semana. Células contornadas em vermelho estão pelo menos 15%{" "}
         acima ou abaixo da média global.
       </p>
-    </div>
+    </ChartContainer>
   );
 }
 
