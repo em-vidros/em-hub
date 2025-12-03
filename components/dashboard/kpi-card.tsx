@@ -32,17 +32,19 @@ function KpiCardComponent({ kpi, variant = "number" }: KpiCardProps) {
   const formattedValue = useMemo(() => renderValue(), [renderValue]);
 
   return (
-    <Card className="h-full">
-      <CardHeader className="flex flex-row items-center justify-between mb-4 pb-0">
-        <CardTitle className="text-sm font-medium text-gray-900 capitalize">
-          {label}
+    <Card className="h-full min-w-0">
+      <CardHeader className="flex flex-row items-center justify-between mb-3 pb-0">
+        <CardTitle className="text-sm sm:text-[0.9rem] font-medium text-gray-900 capitalize min-w-0">
+          <span className="block truncate" title={label}>
+            {label}
+          </span>
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-col gap-2 pb-0">
-        <div className="flex items-baseline gap-2">
-          <p className="text-[1.875rem] font-semibold leading-tight text-gray-900">
-          {formattedValue}
-        </p>
+        <div className="flex items-baseline gap-2 min-w-0">
+          <p className="text-[1.75rem] sm:text-[1.875rem] font-semibold leading-tight text-gray-900 break-words">
+            {formattedValue}
+          </p>
         </div>
         {trendPercentage !== undefined && (
           <div className="flex items-center gap-1 mt-1">
@@ -51,13 +53,17 @@ function KpiCardComponent({ kpi, variant = "number" }: KpiCardProps) {
             ) : (
               <ArrowDownRight className="h-4 w-4 text-[#EF4444]" />
             )}
-            <span className={`text-sm font-medium ${
-              trendPositive ? "text-[#10B981]" : "text-[#EF4444]"
-            }`}>
-            {trendPositive ? "+" : ""}
-            {trendPercentage.toFixed(1)}%
-          </span>
-            <span className="text-xs text-gray-500 ml-1">vs last month</span>
+            <span
+              className={`text-xs sm:text-sm font-medium ${
+                trendPositive ? "text-[#10B981]" : "text-[#EF4444]"
+              }`}
+            >
+              {trendPositive ? "+" : ""}
+              {trendPercentage.toFixed(1)}%
+            </span>
+            <span className="text-[0.7rem] sm:text-xs text-gray-500 ml-1">
+              vs last month
+            </span>
           </div>
         )}
       </CardContent>

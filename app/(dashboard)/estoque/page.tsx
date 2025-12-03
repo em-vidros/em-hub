@@ -16,14 +16,14 @@ export default function EstoquePage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.estoqueTotal} />
         <KpiCard kpi={data.kpis.itensCriticos} />
         <KpiCard kpi={data.kpis.giroMedio} />
         <KpiCard kpi={data.kpis.rupturas} />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Estoque por categoria"
           subtitle="Nível atual vs. mínimo recomendado"

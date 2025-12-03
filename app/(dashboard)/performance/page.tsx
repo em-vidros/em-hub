@@ -54,14 +54,14 @@ export default function PerformancePage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.throughput} />
         <KpiCard kpi={data.kpis.latencia} />
         <KpiCard kpi={data.kpis.uptime} variant="percentage" />
         <KpiCard kpi={data.kpis.taxaErro} variant="percentage" />
       </section>
 
-      <section className="grid gap-4 xl:grid-cols-3">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         <SectionCard
           title="Throughput × Latência por mês"
           subtitle="Comparação entre volume processado e tempo de resposta"
@@ -162,7 +162,7 @@ export default function PerformancePage() {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Taxa de erro por endpoint"
           subtitle="Percentual de respostas com falha e throughput normalizado"

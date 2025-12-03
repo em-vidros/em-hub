@@ -16,14 +16,14 @@ export default function QualidadePage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.taxaAprovacao} variant="percentage" />
         <KpiCard kpi={data.kpis.retrabalho} variant="percentage" />
         <KpiCard kpi={data.kpis.defeitos} />
         <KpiCard kpi={data.kpis.satisfacao} />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Qualidade por produto"
           subtitle="Taxa de aprovação"
@@ -52,7 +52,7 @@ export default function QualidadePage() {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Qualidade por produto"
           subtitle="Taxa de aprovação e defeitos"

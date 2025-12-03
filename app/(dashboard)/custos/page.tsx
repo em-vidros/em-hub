@@ -17,14 +17,14 @@ export default function CustosPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.custoTotal} variant="currency" />
         <KpiCard kpi={data.kpis.custoPorM2} variant="currency" />
         <KpiCard kpi={data.kpis.margemBruta} variant="percentage" />
         <KpiCard kpi={data.kpis.variacaoCusto} variant="percentage" />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Custos por mês"
           subtitle="Evolução e variação"

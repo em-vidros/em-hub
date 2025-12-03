@@ -17,14 +17,14 @@ export default function ClientesPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.totalClientes} />
         <KpiCard kpi={data.kpis.novosClientes} />
         <KpiCard kpi={data.kpis.retencao} variant="percentage" />
         <KpiCard kpi={data.kpis.ticketMedio} variant="currency" />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Evolução de clientes"
           subtitle="Total e novos clientes"

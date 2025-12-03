@@ -34,6 +34,7 @@ export function LoginForm() {
       window.localStorage.setItem("emhub_auth", "true");
     }
 
+    // Após login, direciona para o painel operacional principal.
     router.push("/diretoria");
   }
 

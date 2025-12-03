@@ -43,14 +43,51 @@ const suggestedQuestions = [
   "Status dos deploys",
 ];
 
-function ClaraAIAssistantComponent() {
-  const [isOpen, setIsOpen] = useState(false);
+interface ClaraAIAssistantProps {
+  /**
+   * Quando definido, o componente passa a ser controlado externamente.
+   * Caso contrário, usa o estado interno padrão (floating button).
+   */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  /**
+   * Variante visual:
+   * - "floating": comportamento original (botão flutuante no canto).
+   * - "sheet": ocupa a tela inteira, ideal para mobile.
+   */
+  variant?: "floating" | "sheet";
+  /**
+   * Esconde o gatilho padrão (botão flutuante) quando controlado de fora.
+   */
+  hideDefaultTrigger?: boolean;
+}
+
+function ClaraAIAssistantComponent({
+  open,
+  onOpenChange,
+  variant = "floating",
+  hideDefaultTrigger = false,
+}: ClaraAIAssistantProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [messages, setMessages] = useState(mockConversation);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleOpen = useCallback(() => setIsOpen(true), []);
-  const handleClose = useCallback(() => setIsOpen(false), []);
+  const isControlled = open !== undefined;
+  const isOpen = isControlled ? open : internalOpen;
+
+  const setOpen = useCallback(
+    (next: boolean) => {
+      if (!isControlled) {
+        setInternalOpen(next);
+      }
+      onOpenChange?.(next);
+    },
+    [isControlled, onOpenChange]
+  );
+
+  const handleOpen = useCallback(() => setOpen(true), [setOpen]);
+  const handleClose = useCallback(() => setOpen(false), [setOpen]);
 
   const sendMessage = useCallback(async (text: string) => {
     if (!text.trim()) return;
@@ -145,6 +182,99 @@ function ClaraAIAssistantComponent() {
     [messages]
   );
 
+  const shell = (
+    <div className="w-full h-full flex flex-col overflow-hidden">
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+            <Sparkles className="text-teal-600" size={18} strokeWidth={1.5} />
+          </div>
+          <div>
+            <h3 className="text-sm font-medium text-gray-900">Clara</h3>
+            <p className="text-xs text-gray-500">Assistente IA</p>
+          </div>
+        </div>
+        <button
+          onClick={handleClose}
+          className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+          aria-label="Fechar assistente"
+        >
+          <X size={18} />
+        </button>
+      </div>
+
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3 scroll-smooth">
+        {messages.length === 0 && (
+          <div className="flex flex-col gap-2 mt-4">
+            <p className="text-xs text-gray-500 text-center mb-2">
+              Perguntas sugeridas:
+            </p>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {suggestedQuestionsButtons}
+            </div>
+          </div>
+        )}
+
+        {messagesList}
+
+        {isTyping && (
+          <div className="flex justify-start">
+            <div className="bg-white border border-gray-200 rounded-lg px-3 py-2">
+              <div className="flex gap-1">
+                <div
+                  className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "0ms" }}
+                ></div>
+                <div
+                  className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "150ms" }}
+                ></div>
+                <div
+                  className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
+                  style={{ animationDelay: "300ms" }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Input */}
+      <div className="px-4 py-3 border-t border-gray-100 bg-white">
+        <div className="relative">
+          <input
+            type="text"
+            value={inputValue}
+            onChange={handleInputChange}
+            onKeyPress={handleKeyPress}
+            placeholder="Digite sua pergunta..."
+            className="w-full border border-gray-200 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm outline-none bg-gray-50 focus:bg-white transition-colors"
+          />
+          <button
+            onClick={handleSendClick}
+            disabled={!inputValue.trim()}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-teal-600 hover:text-teal-700 disabled:text-gray-300 transition-colors"
+            aria-label="Enviar mensagem"
+          >
+            <Send size={18} />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+
+  if (variant === "sheet") {
+    return isOpen ? (
+      <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/40 backdrop-blur-sm lg:hidden">
+        <div className="w-full max-w-xl rounded-t-3xl bg-white shadow-2xl">
+          {shell}
+        </div>
+      </div>
+    ) : null;
+  }
+
   return (
     <div className="fixed bottom-8 right-8 z-[1000]">
       <div
@@ -161,7 +291,7 @@ function ClaraAIAssistantComponent() {
           transform: isOpen ? "scale(1)" : "scale(1)",
         }}
       >
-        {!isOpen && (
+        {!isOpen && !hideDefaultTrigger && (
           <button
             onClick={handleOpen}
             className="absolute inset-0 flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95"
@@ -170,95 +300,7 @@ function ClaraAIAssistantComponent() {
             <Sparkles className="text-teal-600" size={20} strokeWidth={1.5} />
           </button>
         )}
-        {isOpen && (
-          <div 
-            className="w-full h-full flex flex-col overflow-hidden"
-            style={{
-              opacity: isOpen ? 1 : 0,
-              pointerEvents: isOpen ? "auto" : "none",
-              transition: "opacity 0.3s ease-in 0.2s",
-            }}
-          >
-            {/* Header */}
-            <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
-                  <Sparkles className="text-teal-600" size={18} strokeWidth={1.5} />
-                </div>
-                <div>
-                  <h3 className="text-sm font-medium text-gray-900">Clara</h3>
-                  <p className="text-xs text-gray-500">Assistente IA</p>
-                </div>
-              </div>
-              <button
-                onClick={handleClose}
-                className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                aria-label="Fechar assistente"
-              >
-                <X size={18} />
-              </button>
-            </div>
-
-            {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 bg-gray-50 space-y-3 scroll-smooth">
-            {messages.length === 0 && (
-              <div className="flex flex-col gap-2 mt-4">
-                <p className="text-xs text-gray-500 text-center mb-2">
-                  Perguntas sugeridas:
-                </p>
-                <div className="flex flex-wrap gap-2 justify-center">
-                  {suggestedQuestionsButtons}
-                </div>
-              </div>
-            )}
-
-            {messagesList}
-
-            {isTyping && (
-              <div className="flex justify-start">
-                <div className="bg-white border border-gray-200 rounded-lg px-3 py-2">
-                  <div className="flex gap-1">
-                    <div
-                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "0ms" }}
-                    ></div>
-                    <div
-                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "150ms" }}
-                    ></div>
-                    <div
-                      className="w-1.5 h-1.5 bg-gray-400 rounded-full animate-bounce"
-                      style={{ animationDelay: "300ms" }}
-                    ></div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-            {/* Input */}
-            <div className="px-4 py-3 border-t border-gray-100 bg-white">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={inputValue}
-                  onChange={handleInputChange}
-                  onKeyPress={handleKeyPress}
-                  placeholder="Digite sua pergunta..."
-                  className="w-full border border-gray-200 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm outline-none bg-gray-50 focus:bg-white transition-colors"
-                />
-                <button
-                  onClick={handleSendClick}
-                  disabled={!inputValue.trim()}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-teal-600 hover:text-teal-700 disabled:text-gray-300 transition-colors"
-                  aria-label="Enviar mensagem"
-                >
-                  <Send size={18} />
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
+        {isOpen && shell}
       </div>
     </div>
   );

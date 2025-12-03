@@ -154,7 +154,6 @@
 
   body {
     @apply bg-background text-foreground font-sans;
-    overflow: hidden; /* Prevent double scrollbars */
   }
 
   /* Custom scrollbar styling */

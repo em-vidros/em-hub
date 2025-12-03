@@ -16,14 +16,14 @@ export default function ProcessosPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.processosAtivos} />
         <KpiCard kpi={data.kpis.tempoMedio} />
         <KpiCard kpi={data.kpis.eficiencia} variant="percentage" />
         <KpiCard kpi={data.kpis.gargalos} />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Tempo por etapa"
           subtitle="Tempo médio de processamento"
@@ -52,7 +52,7 @@ export default function ProcessosPage() {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Processos por etapa"
           subtitle="Tempo médio e volume"

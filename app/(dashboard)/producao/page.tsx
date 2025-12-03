@@ -31,14 +31,14 @@ export default async function ProducaoPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.produtividadeMedia} />
         <KpiCard kpi={data.kpis.oee} variant="percentage" />
         <KpiCard kpi={data.kpis.tempoParada} />
         <KpiCard kpi={data.kpis.retrabalho} variant="percentage" />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Produção por turno"
           subtitle="Volume produzido em m², últimos 30 dias"
@@ -96,7 +96,7 @@ export default async function ProducaoPage() {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Mapa de calor por turno e dia"
           subtitle="Volume produzido por turno e dia da semana"

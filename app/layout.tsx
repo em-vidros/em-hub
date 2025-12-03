@@ -25,9 +25,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className="h-full overflow-hidden">
+    <html lang="pt-BR" className="h-full">
       <body
-        className={`${inter.variable} ${geistMono.variable} antialiased bg-background text-foreground h-full overflow-hidden`}
+        className={`${inter.variable} ${geistMono.variable} antialiased bg-background text-foreground min-h-screen`}
       >
         {children}
       </body>

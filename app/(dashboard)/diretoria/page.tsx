@@ -16,7 +16,7 @@ export default function DiretoriaPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard kpi={data.kpis.faturamento} variant="currency" />
         <KpiCard kpi={data.kpis.margem} variant="percentage" />
         <KpiCard kpi={data.kpis.volumeProduzido} />
@@ -25,7 +25,7 @@ export default function DiretoriaPage() {
         <KpiCard kpi={data.kpis.retrabalho} variant="percentage" />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Faturamento mensal"
           subtitle="Últimos 4 meses (R$)"
@@ -57,7 +57,7 @@ export default function DiretoriaPage() {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Principais clientes"
           subtitle="Por faturamento"

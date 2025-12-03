@@ -27,9 +27,7 @@ interface ChartContainerProps {
 export function ChartContainer({ children, className }: ChartContainerProps) {
   return (
     <div
-      className={`w-full rounded-2xl border border-gray-100 p-4 ${
-        className ?? "h-56"
-      }`}
+      className={`w-full rounded-2xl border border-gray-100 p-3 sm:p-4 h-52 sm:h-56 ${className ?? ""}`}
       style={{
         background: CHART_BACKGROUND,
       }}

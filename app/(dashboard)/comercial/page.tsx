@@ -28,14 +28,14 @@ export default async function ComercialPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.vendasTotais} variant="currency" />
         <KpiCard kpi={data.kpis.ticketMedio} variant="currency" />
         <KpiCard kpi={data.kpis.novosClientes} />
         <KpiCard kpi={data.kpis.taxaConversao} variant="percentage" />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Vendas por mês"
           subtitle="Tendência de faturamento"
@@ -64,7 +64,7 @@ export default async function ComercialPage() {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Distribuição de tickets"
           subtitle="Histograma por faixa de valor de pedido"
@@ -113,7 +113,7 @@ export default async function ComercialPage() {
         </SectionCard>
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="Funil de vendas"
           subtitle="Conversão por etapa e valor em pipeline"

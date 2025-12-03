@@ -16,14 +16,14 @@ export default function EficienciaPage() {
 
   return (
     <div className="space-y-6">
-      <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <section className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard kpi={data.kpis.oeeGeral} variant="percentage" />
         <KpiCard kpi={data.kpis.produtividade} />
         <KpiCard kpi={data.kpis.utilizacao} variant="percentage" />
         <KpiCard kpi={data.kpis.desperdicio} variant="percentage" />
       </section>
 
-      <section className="grid gap-4 md:grid-cols-2">
+      <section className="grid gap-4 grid-cols-1 md:grid-cols-2">
         <SectionCard
           title="OEE por linha"
           subtitle="Eficiência geral de equipamentos"
