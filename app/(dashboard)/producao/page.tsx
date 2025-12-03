@@ -18,6 +18,10 @@ import {
   getOeeVsRetrabalho,
 } from "@/lib/analytics-client";
 
+// Aproveita o full-route cache do Next 16 para esta página de analytics,
+// revalidando os dados agregados de produção a cada 5 minutos em produção.
+export const revalidate = 300;
+
 export default async function ProducaoPage() {
   const [data, scatter, heatmap] = await Promise.all([
     Promise.resolve(getProducaoMockData("30d")),

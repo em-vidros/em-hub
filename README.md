@@ -45,20 +45,45 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 - `bun run start` - Start the production server
 - `bun run lint` - Run ESLint
 
-## Learn More
+## Caching de analytics com Next 16
 
-To learn more about the technologies used in this project:
+Este projeto utiliza o sistema de cache do Next 16 para os dados de analytics
+expostos pelo backend Python (`analytics-api`):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API
-- [Bun Documentation](https://bun.sh/docs) - learn about Bun's features and capabilities
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial
+- O cliente de analytics em `lib/analytics-client.ts` encapsula `fetch` com:
+  - `cache: "force-cache"` + `next.revalidate` e `next.tags` para dados
+    agregados cacheáveis
+  - `cache: "no-store"` em desenvolvimento ou quando `revalidateSeconds <= 0`
+- Páginas de dashboard em `app/(dashboard)` usam full-route cache (via
+  `export const revalidate`) sempre que possível.
 
-You can check out:
-- [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-- [the Bun GitHub repository](https://github.com/oven-sh/bun) - fast all-in-one JavaScript runtime
+### Variáveis de ambiente de revalidação
 
-## Deploy on Vercel
+As políticas de revalidação são controladas por variáveis de ambiente
+(somente server-side):
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `ANALYTICS_REVALIDATE_SECONDS_DEFAULT`:
+  - Tempo padrão de revalidação (segundos) para a maioria dos endpoints de
+    analytics
+  - Fallback: 300 segundos (5 minutos) em produção/stage
+  - Em `NODE_ENV=development`, o helper força `no-store` independentemente
+    do valor
+- `ANALYTICS_REVALIDATE_SECONDS_SLOW`:
+  - Tempo de revalidação para análises mais estáveis (ex.: histogramas)
+  - Fallback: 900 segundos (15 minutos) em produção/stage
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Convenções de uso do cliente de analytics
+
+O helper principal é `fetchAnalytics` (usado internamente pelas funções
+exportadas em `lib/analytics-client.ts`):
+
+- Em produção/stage:
+  - Endpoints agregados comuns usam `ANALYTICS_REVALIDATE_SECONDS_DEFAULT`
+  - Endpoints de análises estáveis (como distribuição de ticket) usam
+    `ANALYTICS_REVALIDATE_SECONDS_SLOW`
+- Em desenvolvimento:
+  - Sempre `no-store` para evitar confusão com cache.
+
+Futuramente, rotas ou processos de ETL poderão chamar `revalidateTag` com as
+tags definidas em `lib/analytics-client.ts` para invalidação seletiva dos
+caches quando novos dados forem carregados.

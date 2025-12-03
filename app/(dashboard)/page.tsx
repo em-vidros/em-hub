@@ -14,6 +14,10 @@ import { getProducaoMockData } from "@/data/producao";
 import { getComercialMockData } from "@/data/comercial";
 import { getEstoqueMockData } from "@/data/estoque";
 
+// Página de visão geral ainda usa mocks client-side, então mantemos dinâmica.
+// Quando migrar para dados reais via server components, esta configuração poderá ser ajustada.
+export const dynamic = "force-dynamic";
+
 export default function OverviewPage() {
   const diretoria = useMemo(() => getDiretoriaMockData("30d"), []);
   const producao = useMemo(() => getProducaoMockData("30d"), []);

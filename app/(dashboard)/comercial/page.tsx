@@ -16,6 +16,10 @@ import {
 import { getComercialMockData } from "@/data/comercial";
 import { getDistribuicaoTicket } from "@/lib/analytics-client";
 
+// Usa full-route cache com revalidate para a maioria dos gráficos comerciais,
+// enquanto o histograma de tickets é servido via data cache com política própria.
+export const revalidate = 300;
+
 export default async function ComercialPage() {
   const [data, distTicket] = await Promise.all([
     Promise.resolve(getComercialMockData("30d")),

@@ -207,7 +207,6 @@ export default function DashboardLayout({
         </div>
       </aside>
 
-      {/* Collapse Toggle Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
@@ -217,7 +216,7 @@ export default function DashboardLayout({
           active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           style={{
             top: "2.3rem",
-            left: isCollapsed ? "3.5rem" : "14rem",
+            left: isCollapsed ? "3.5rem" : "13.4rem",
             transform: "translateY(0) translateZ(0)",
             transition: "left 200ms cubic-bezier(0.4, 0, 0.2, 1)",
             willChange: "left",
