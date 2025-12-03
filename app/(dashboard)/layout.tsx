@@ -145,7 +145,7 @@ export default function DashboardLayout({
                     key={item.href}
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className={`group flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-xs font-medium transition-all outline-none ring-ring/50 focus-visible:ring-2 ${
+                    className={`group flex items-center gap-1.5 rounded-[6px] px-3 py-1.5 text-xs font-medium transition-all outline-none ring-ring/50 focus-visible:ring-2 ${
                       active
                         ? "bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
                         : "text-gray-500 hover:bg-white/50 hover:text-gray-900"
