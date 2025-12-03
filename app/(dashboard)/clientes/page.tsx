@@ -48,7 +48,6 @@ export default function ClientesPage() {
               label: s.segmento,
               value: s.quantidade,
             }))}
-            yLabel="Quantidade de clientes"
           />
         </SectionCard>
       </section>
