@@ -97,25 +97,37 @@ export default function DashboardLayout({
       <div className="flex h-screen relative">
         <aside
           data-collapsed={isCollapsed ? "true" : "false"}
-          className={`flex flex-col transition-all duration-300 ease-in-out text-[11px] md:text-xs ${
-            isCollapsed ? "w-16 p-2" : "w-56 p-4"
-          }`}
+          className="flex flex-col text-[11px] md:text-xs relative"
+          style={{
+            maxWidth: isCollapsed ? "4rem" : "14rem",
+            width: isCollapsed ? "4rem" : "14rem",
+            padding: isCollapsed ? "0.5rem" : "1rem",
+            flexShrink: 0,
+            overflow: "hidden",
+            willChange: "max-width, width, padding",
+            contain: "strict",
+            isolation: "isolate",
+            transform: "translate3d(0, 0, 0)",
+            WebkitTransform: "translate3d(0, 0, 0)",
+            transition: "max-width 180ms cubic-bezier(0.25, 0.1, 0.25, 1), width 180ms cubic-bezier(0.25, 0.1, 0.25, 1), padding 180ms cubic-bezier(0.25, 0.1, 0.25, 1)",
+            contentVisibility: "auto",
+          }}
         >
         <div className={`mb-6 flex items-center ${isCollapsed ? "justify-center" : ""} px-2`}>
           <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-primary-foreground text-sm font-bold shadow-sm flex-shrink-0">
+            <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary text-primary-foreground text-sm font-bold shadow-sm flex-shrink-0">
               EM
             </div>
             {!isCollapsed && (
               <div className="flex flex-col truncate">
                 <span className="text-sm font-semibold tracking-tight text-gray-900">EM Hub</span>
                 <span className="text-[10px] font-medium text-gray-500">Observabilidade</span>
-          </div>
+              </div>
             )}
           </div>
         </div>
         
-        <nav className="flex-1 space-y-3">
+        <nav className="flex-1 space-y-3" style={{ contain: "layout style paint", willChange: "auto" }}>
           {NAV_SECTIONS.map((section, sectionIdx) => (
             <div key={sectionIdx} className="space-y-0.5">
               {section.title && !isCollapsed && (
@@ -133,7 +145,7 @@ export default function DashboardLayout({
                     key={item.href}
                     href={item.href}
                     aria-current={active ? "page" : undefined}
-                    className={`group flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all outline-none ring-ring/50 focus-visible:ring-2 ${
+                    className={`group flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-xs font-medium transition-all outline-none ring-ring/50 focus-visible:ring-2 ${
                       active
                         ? "bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.08)]"
                         : "text-gray-500 hover:bg-white/50 hover:text-gray-900"
@@ -156,23 +168,23 @@ export default function DashboardLayout({
         </nav>
         
         <div className="mt-auto pt-4">
-          <div className={`flex items-center gap-2 rounded-xl border border-gray-100 bg-white/50 p-2 ${isCollapsed ? "justify-center" : ""}`}>
-            <Avatar className="h-8 w-8 rounded-lg border border-gray-100 flex-shrink-0">
-              <AvatarFallback className="rounded-lg bg-gray-100 text-xs font-medium text-gray-500">EV</AvatarFallback>
+          <div className={`flex items-center gap-2 rounded-sm border border-gray-100 bg-white/50 p-2 ${isCollapsed ? "justify-center" : ""}`}>
+            <Avatar className="h-8 w-8 rounded-sm border border-gray-100 flex-shrink-0">
+              <AvatarFallback className="rounded-sm bg-gray-100 text-xs font-medium text-gray-500">EV</AvatarFallback>
           </Avatar>
             {!isCollapsed && (
               <>
                 <div className="flex flex-1 flex-col overflow-hidden min-w-0">
                   <span className="truncate text-xs font-medium text-gray-900">Gestor EM</span>
                   <span className="truncate text-[10px] text-gray-500">admin@emvidros.com</span>
-          </div>
-          <Button
-            type="button"
-            size="icon"
+                </div>
+                <Button
+                  type="button"
+                  size="icon"
                   variant="ghost"
                   className="h-7 w-7 flex-shrink-0 text-gray-500 hover:text-gray-900"
-            onClick={handleLogout}
-          >
+                  onClick={handleLogout}
+                >
                   <span className="sr-only">Sair</span>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -188,24 +200,30 @@ export default function DashboardLayout({
                     <polyline points="16 17 21 12 16 7" />
                     <line x1="21" x2="9" y1="12" y2="12" />
                   </svg>
-          </Button>
+                </Button>
               </>
             )}
           </div>
         </div>
       </aside>
 
-      {/* Collapse Toggle Button - Positioned next to header */}
+      {/* Collapse Toggle Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         aria-expanded={!isCollapsed}
-        className={`absolute z-50 transition-all duration-300 ease-in-out
-          w-8 h-8 bg-white rounded-full border border-gray-100 shadow-md
+        className="absolute z-50 w-8 h-8 bg-white rounded-full border border-gray-100 shadow-md
           flex items-center justify-center cursor-pointer hover:shadow-lg hover:scale-105
-          active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
-          ${isCollapsed ? "left-14" : "left-56"}`}
-        style={{ top: "2.3rem", transform: "translateY(0)" }}
+          active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          style={{
+            top: "2.3rem",
+            left: isCollapsed ? "3.5rem" : "14rem",
+            transform: "translateY(0) translateZ(0)",
+            transition: "left 200ms cubic-bezier(0.4, 0, 0.2, 1)",
+            willChange: "left",
+            backfaceVisibility: "hidden",
+            WebkitTransform: "translateY(0) translateZ(0)",
+          }}
       >
         {isCollapsed ? (
           <ChevronRight size={16} className="text-gray-600" />

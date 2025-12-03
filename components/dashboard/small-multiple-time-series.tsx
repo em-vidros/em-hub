@@ -47,7 +47,7 @@ export function SmallMultipleTimeSeries({
           <div className="mb-1 text-xs font-medium text-gray-600 truncate">
             {s.name}
           </div>
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minHeight={0}>
             <LineChart data={s.points} margin={{ top: 0, right: 8, bottom: 0, left: 0 }}>
               <DefaultCartesianGrid />
               <XAxis

@@ -1,3 +1,6 @@
+"use client";
+
+import { useMemo } from "react";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { TimeSeriesChart } from "@/components/dashboard/time-series-chart";
 import { CategoryBarChart } from "@/components/dashboard/category-bar-chart";
@@ -13,7 +16,27 @@ import {
 import { getRiscosMockData } from "@/data/analises";
 
 export default function RiscosPage() {
-  const data = getRiscosMockData("30d");
+  const data = useMemo(() => getRiscosMockData("30d"), []);
+
+  const evolucaoRiscosData = useMemo(
+    () =>
+      data.evolucaoRiscos.map((p) => ({
+        label: new Date(p.date).toLocaleDateString("pt-BR", {
+          month: "short",
+        }),
+        value: p.total,
+      })),
+    [data.evolucaoRiscos]
+  );
+
+  const riscosPorCategoriaData = useMemo(
+    () =>
+      data.riscosPorCategoria.map((r) => ({
+        label: r.categoria,
+        value: r.quantidade,
+      })),
+    [data.riscosPorCategoria]
+  );
 
   return (
     <div className="space-y-6">
@@ -30,12 +53,7 @@ export default function RiscosPage() {
           subtitle="Total e riscos críticos"
         >
           <TimeSeriesChart
-            data={data.evolucaoRiscos.map((p) => ({
-              label: new Date(p.date).toLocaleDateString("pt-BR", {
-                month: "short",
-              }),
-              value: p.total,
-            }))}
+            data={evolucaoRiscosData}
             yLabel="Total de riscos"
           />
         </SectionCard>
@@ -44,10 +62,7 @@ export default function RiscosPage() {
           subtitle="Distribuição e severidade"
         >
           <CategoryBarChart
-            data={data.riscosPorCategoria.map((r) => ({
-              label: r.categoria,
-              value: r.quantidade,
-            }))}
+            data={riscosPorCategoriaData}
             yLabel="Quantidade de riscos"
           />
         </SectionCard>

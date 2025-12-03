@@ -73,7 +73,7 @@ export function HistogramChart({
 
   return (
     <ChartContainer>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={0}>
         <BarChart
           data={computedBuckets}
           margin={{ left: 8, right: 8, top: 8, bottom: 40 }}

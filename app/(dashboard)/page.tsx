@@ -1,3 +1,6 @@
+"use client";
+
+import { useMemo } from "react";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { TimeSeriesChart } from "@/components/dashboard/time-series-chart";
 import { SectionCard } from "@/components/dashboard/section-card";
@@ -12,24 +15,72 @@ import { getComercialMockData } from "@/data/comercial";
 import { getEstoqueMockData } from "@/data/estoque";
 
 export default function OverviewPage() {
-  const diretoria = getDiretoriaMockData("30d");
-  const producao = getProducaoMockData("30d");
-  const comercial = getComercialMockData("30d");
-  const estoque = getEstoqueMockData("30d");
+  const diretoria = useMemo(() => getDiretoriaMockData("30d"), []);
+  const producao = useMemo(() => getProducaoMockData("30d"), []);
+  const comercial = useMemo(() => getComercialMockData("30d"), []);
+  const estoque = useMemo(() => getEstoqueMockData("30d"), []);
 
-  const scatterData = producao.linhas.map((linha) => ({
-    x: linha.oeePercentual,
-    y: linha.retrabalhoPercentual,
-    z: 4 + Math.random() * 4,
-    label: linha.nome,
-    category: linha.status,
-  }));
+  const scatterData = useMemo(
+    () =>
+      producao.linhas.map((linha) => ({
+        x: linha.oeePercentual,
+        y: linha.retrabalhoPercentual,
+        z: 4 + Math.random() * 4,
+        label: linha.nome,
+        category: linha.status,
+      })),
+    [producao.linhas]
+  );
 
-  const heatmapData = producao.volumeTurnoDia.map((ponto) => ({
-    x: ponto.diaSemana,
-    y: ponto.turno,
-    value: ponto.volumeM2,
-  }));
+  const heatmapData = useMemo(
+    () =>
+      producao.volumeTurnoDia.map((ponto) => ({
+        x: ponto.diaSemana,
+        y: ponto.turno,
+        value: ponto.volumeM2,
+      })),
+    [producao.volumeTurnoDia]
+  );
+
+  const faturamentoData = useMemo(
+    () =>
+      diretoria.faturamentoPorMes.map((p) => ({
+        label: new Date(p.date).toLocaleDateString("pt-BR", {
+          month: "short",
+        }),
+        value: p.value,
+      })),
+    [diretoria.faturamentoPorMes]
+  );
+
+  const eficienciaData = useMemo(
+    () =>
+      diretoria.eficienciaPorMes.map((p) => ({
+        label: new Date(p.date).toLocaleDateString("pt-BR", {
+          month: "short",
+        }),
+        value: p.value,
+      })),
+    [diretoria.eficienciaPorMes]
+  );
+
+  const despesasData = useMemo(
+    () =>
+      diretoria.despesasPorTipo.map((d) => ({
+        label: d.tipo,
+        value: d.valor,
+      })),
+    [diretoria.despesasPorTipo]
+  );
+
+  const coberturaData = useMemo(
+    () =>
+      estoque.coberturaPorCategoria.map((c) => ({
+        label: c.categoria,
+        value: c.diasCobertura,
+      })),
+    [estoque.coberturaPorCategoria]
+  );
 
   return (
     <div className="space-y-6">
@@ -46,12 +97,7 @@ export default function OverviewPage() {
           subtitle="Últimos 4 meses (R$)"
         >
           <TimeSeriesChart
-            data={diretoria.faturamentoPorMes.map((p) => ({
-              label: new Date(p.date).toLocaleDateString("pt-BR", {
-                month: "short",
-              }),
-              value: p.value,
-            }))}
+            data={faturamentoData}
             yLabel="Faturamento consolidado"
           />
           <p className="mt-2 text-xs text-gray-500">
@@ -66,12 +112,7 @@ export default function OverviewPage() {
           subtitle="Últimos 4 meses (%)"
         >
           <TimeSeriesChart
-            data={diretoria.eficienciaPorMes.map((p) => ({
-              label: new Date(p.date).toLocaleDateString("pt-BR", {
-                month: "short",
-              }),
-              value: p.value,
-            }))}
+            data={eficienciaData}
             yLabel="Eficiência média por mês"
             suffix="%"
           />
@@ -117,24 +158,13 @@ export default function OverviewPage() {
           title="Despesas operacionais"
           subtitle="Perfil de custo industrial"
         >
-          <CategoryBarChart
-            data={diretoria.despesasPorTipo.map((d) => ({
-              label: d.tipo,
-              value: d.valor,
-            }))}
-          />
+          <CategoryBarChart data={despesasData} />
         </SectionCard>
         <SectionCard
           title="Cobertura de estoque por categoria"
           subtitle="Dias de atendimento estimados"
         >
-          <CategoryBarChart
-            data={estoque.coberturaPorCategoria.map((c) => ({
-              label: c.categoria,
-              value: c.diasCobertura,
-            }))}
-            suffix=" dias"
-          />
+          <CategoryBarChart data={coberturaData} suffix=" dias" />
         </SectionCard>
         <SectionCard
           title="Resumo técnico"

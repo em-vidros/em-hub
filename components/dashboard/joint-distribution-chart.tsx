@@ -41,7 +41,7 @@ export function JointDistributionChart({
 
   return (
     <ChartContainer>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={0}>
         <ScatterChart margin={{ top: 8, right: 16, bottom: 24, left: 32 }}>
           <CartesianGrid strokeDasharray="3 3" stroke="#E4E4E7" opacity={0.9} />
           <XAxis

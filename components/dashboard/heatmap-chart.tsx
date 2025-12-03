@@ -68,7 +68,7 @@ export function HeatmapChart({ data, xLabel, yLabel }: HeatmapChartProps) {
 
   return (
     <ChartContainer className="h-64">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={0}>
         <ScatterChart margin={{ top: 16, right: 16, bottom: 40, left: 40 }}>
           <DefaultCartesianGrid />
           <XAxis

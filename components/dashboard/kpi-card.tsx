@@ -1,3 +1,4 @@
+import { memo, useCallback, useMemo } from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,17 +14,22 @@ interface KpiCardProps {
   variant?: "currency" | "percentage" | "number";
 }
 
-export function KpiCard({ kpi, variant = "number" }: KpiCardProps) {
+function KpiCardComponent({ kpi, variant = "number" }: KpiCardProps) {
   const { label, value, unit, trendPercentage } = kpi;
 
-  function renderValue() {
+  const renderValue = useCallback(() => {
     if (variant === "currency") return formatCurrencyBRL(value);
     if (variant === "percentage") return formatPercentage(value);
     if (unit) return `${formatNumber(value)} ${unit}`;
     return formatNumber(value);
-  }
+  }, [variant, value, unit]);
 
-  const trendPositive = (trendPercentage ?? 0) >= 0;
+  const trendPositive = useMemo(
+    () => (trendPercentage ?? 0) >= 0,
+    [trendPercentage]
+  );
+
+  const formattedValue = useMemo(() => renderValue(), [renderValue]);
 
   return (
     <Card className="h-full">
@@ -35,7 +41,7 @@ export function KpiCard({ kpi, variant = "number" }: KpiCardProps) {
       <CardContent className="flex flex-col gap-2 pb-0">
         <div className="flex items-baseline gap-2">
           <p className="text-[1.875rem] font-semibold leading-tight text-gray-900">
-          {renderValue()}
+          {formattedValue}
         </p>
         </div>
         {trendPercentage !== undefined && (
@@ -58,5 +64,7 @@ export function KpiCard({ kpi, variant = "number" }: KpiCardProps) {
     </Card>
   );
 }
+
+export const KpiCard = memo(KpiCardComponent);
 
 

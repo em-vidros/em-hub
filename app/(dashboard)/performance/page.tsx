@@ -1,5 +1,6 @@
  "use client";
 
+import { useMemo } from "react";
 import { KpiCard } from "@/components/dashboard/kpi-card";
 import { TimeSeriesChart } from "@/components/dashboard/time-series-chart";
 import { CategoryBarChart } from "@/components/dashboard/category-bar-chart";
@@ -32,9 +33,23 @@ import {
 import { getPerformanceMockData } from "@/data/insights";
 
 export default function PerformancePage() {
-  const data = getPerformanceMockData("30d");
-  const maxEndpointThroughput = Math.max(
-    ...data.taxaErroPorEndpoint.map((e) => e.throughput),
+  const data = useMemo(() => getPerformanceMockData("30d"), []);
+  
+  const maxEndpointThroughput = useMemo(
+    () => Math.max(...data.taxaErroPorEndpoint.map((e) => e.throughput)),
+    [data.taxaErroPorEndpoint]
+  );
+
+  const performancePorMesData = useMemo(
+    () =>
+      data.performancePorMes.map((p) => ({
+        label: new Date(p.date).toLocaleDateString("pt-BR", {
+          month: "short",
+        }),
+        throughput: p.throughput,
+        latencia: p.latencia,
+      })),
+    [data.performancePorMes]
   );
 
   return (
@@ -52,15 +67,9 @@ export default function PerformancePage() {
           subtitle="Comparação entre volume processado e tempo de resposta"
         >
           <ChartContainer>
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minHeight={0}>
               <LineChart
-                data={data.performancePorMes.map((p) => ({
-                  label: new Date(p.date).toLocaleDateString("pt-BR", {
-                    month: "short",
-                  }),
-                  throughput: p.throughput,
-                  latencia: p.latencia,
-                }))}
+                data={performancePorMesData}
                 margin={{ top: 8, right: 24, bottom: 8, left: 0 }}
               >
                 <DefaultCartesianGrid />

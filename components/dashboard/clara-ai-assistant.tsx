@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback, useMemo, memo } from "react";
 import { Sparkles, X, Send } from "lucide-react";
 
 const mockConversation = [
@@ -43,13 +43,16 @@ const suggestedQuestions = [
   "Status dos deploys",
 ];
 
-export function ClaraAIAssistant() {
+function ClaraAIAssistantComponent() {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState(mockConversation);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
-  const sendMessage = async (text: string) => {
+  const handleOpen = useCallback(() => setIsOpen(true), []);
+  const handleClose = useCallback(() => setIsOpen(false), []);
+
+  const sendMessage = useCallback(async (text: string) => {
     if (!text.trim()) return;
 
     const userMessage = {
@@ -80,7 +83,67 @@ export function ClaraAIAssistant() {
       setMessages((prev) => [...prev, aiMessage]);
       setIsTyping(false);
     }, 1500);
-  };
+  }, []);
+
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => setInputValue(e.target.value),
+    []
+  );
+
+  const handleKeyPress = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (e.key === "Enter") {
+        sendMessage(inputValue);
+      }
+    },
+    [inputValue, sendMessage]
+  );
+
+  const handleSendClick = useCallback(() => {
+    sendMessage(inputValue);
+  }, [inputValue, sendMessage]);
+
+  const suggestedQuestionsButtons = useMemo(
+    () =>
+      suggestedQuestions.map((q, idx) => (
+        <button
+          key={idx}
+          onClick={() => sendMessage(q)}
+          className="bg-gray-100 text-gray-600 rounded-full px-4 py-2 text-xs hover:bg-gray-200 cursor-pointer transition-colors"
+        >
+          {q}
+        </button>
+      )),
+    [sendMessage]
+  );
+
+  const messagesList = useMemo(
+    () =>
+      messages.map((msg) => (
+        <div
+          key={msg.id}
+          className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
+        >
+          <div
+            className={`max-w-[75%] px-3 py-2 rounded-lg ${
+              msg.type === "user"
+                ? "bg-teal-600 text-white"
+                : "bg-white text-gray-900 border border-gray-200"
+            }`}
+          >
+            <p className="text-sm leading-relaxed">{msg.message}</p>
+            <span
+              className={`text-xs mt-1 block ${
+                msg.type === "user" ? "text-teal-200" : "text-gray-400"
+              }`}
+            >
+              {msg.timestamp}
+            </span>
+          </div>
+        </div>
+      )),
+    [messages]
+  );
 
   return (
     <div className="fixed bottom-8 right-8 z-[1000]">
@@ -100,7 +163,7 @@ export function ClaraAIAssistant() {
       >
         {!isOpen && (
           <button
-            onClick={() => setIsOpen(true)}
+            onClick={handleOpen}
             className="absolute inset-0 flex items-center justify-center cursor-pointer transition-all duration-200 hover:scale-105 active:scale-95"
             aria-label="Abrir assistente Clara"
           >
@@ -128,7 +191,7 @@ export function ClaraAIAssistant() {
                 </div>
               </div>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={handleClose}
                 className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
                 aria-label="Fechar assistente"
               >
@@ -144,42 +207,12 @@ export function ClaraAIAssistant() {
                   Perguntas sugeridas:
                 </p>
                 <div className="flex flex-wrap gap-2 justify-center">
-                  {suggestedQuestions.map((q, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => sendMessage(q)}
-                      className="bg-gray-100 text-gray-600 rounded-full px-4 py-2 text-xs hover:bg-gray-200 cursor-pointer transition-colors"
-                    >
-                      {q}
-                    </button>
-                  ))}
+                  {suggestedQuestionsButtons}
                 </div>
               </div>
             )}
 
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.type === "user" ? "justify-end" : "justify-start"}`}
-              >
-                <div
-                  className={`max-w-[75%] px-3 py-2 rounded-lg ${
-                    msg.type === "user"
-                      ? "bg-teal-600 text-white"
-                      : "bg-white text-gray-900 border border-gray-200"
-                  }`}
-                >
-                  <p className="text-sm leading-relaxed">{msg.message}</p>
-                  <span
-                    className={`text-xs mt-1 block ${
-                      msg.type === "user" ? "text-teal-200" : "text-gray-400"
-                    }`}
-                  >
-                    {msg.timestamp}
-                  </span>
-                </div>
-              </div>
-            ))}
+            {messagesList}
 
             {isTyping && (
               <div className="flex justify-start">
@@ -209,15 +242,13 @@ export function ClaraAIAssistant() {
                 <input
                   type="text"
                   value={inputValue}
-                  onChange={(e) => setInputValue(e.target.value)}
-                  onKeyPress={(e) =>
-                    e.key === "Enter" && sendMessage(inputValue)
-                  }
+                  onChange={handleInputChange}
+                  onKeyPress={handleKeyPress}
                   placeholder="Digite sua pergunta..."
                   className="w-full border border-gray-200 rounded-lg px-3 py-2 pr-10 focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm outline-none bg-gray-50 focus:bg-white transition-colors"
                 />
                 <button
-                  onClick={() => sendMessage(inputValue)}
+                  onClick={handleSendClick}
                   disabled={!inputValue.trim()}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-teal-600 hover:text-teal-700 disabled:text-gray-300 transition-colors"
                   aria-label="Enviar mensagem"
@@ -232,4 +263,6 @@ export function ClaraAIAssistant() {
     </div>
   );
 }
+
+export const ClaraAIAssistant = memo(ClaraAIAssistantComponent);
 

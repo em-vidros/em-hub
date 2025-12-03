@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo, useCallback } from "react";
 import {
   Line,
   LineChart,
@@ -22,14 +23,26 @@ interface TimeSeriesChartProps {
   suffix?: string;
 }
 
-export function TimeSeriesChart({
+function TimeSeriesChartComponent({
   data,
   yLabel,
   suffix,
 }: TimeSeriesChartProps) {
+  const tickFormatter = useCallback((v: number) => {
+    if (suffix === "%") return `${v}`;
+    if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000) return `${(v / 1_000).toFixed(0)}k`;
+    return `${v}`;
+  }, [suffix]);
+
+  const tooltipFormatter = useCallback((value: number) => {
+    return suffix ? `${value.toFixed(1)}${suffix}` : value.toLocaleString("pt-BR");
+  }, [suffix]);
+
+  const tooltipLabelFormatter = useCallback((label: string) => `${label}`, []);
   return (
     <ChartContainer>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={0}>
         <LineChart data={data} margin={{ top: 8, right: 16, bottom: 8, left: 0 }}>
           <DefaultCartesianGrid />
           <XAxis
@@ -42,22 +55,12 @@ export function TimeSeriesChart({
             tickLine={false}
             axisLine={false}
             tickMargin={4}
-            tickFormatter={(v) =>
-              suffix === "%"
-                ? `${v}`
-                : v >= 1_000_000
-                  ? `${(v / 1_000_000).toFixed(1)}M`
-                  : v >= 1_000
-                    ? `${(v / 1_000).toFixed(0)}k`
-                    : `${v}`
-            }
+            tickFormatter={tickFormatter}
           />
           <Tooltip
             contentStyle={{ color: "#000" }}
-            formatter={(value: number) =>
-              suffix ? `${value.toFixed(1)}${suffix}` : value.toLocaleString("pt-BR")
-            }
-            labelFormatter={(label) => `${label}`}
+            formatter={tooltipFormatter}
+            labelFormatter={tooltipLabelFormatter}
           />
           <Line
             type="monotone"
@@ -76,5 +79,7 @@ export function TimeSeriesChart({
     </ChartContainer>
   );
 }
+
+export const TimeSeriesChart = memo(TimeSeriesChartComponent);
 
 

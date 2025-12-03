@@ -1,5 +1,6 @@
 "use client";
 
+import { memo, useMemo, useCallback } from "react";
 import {
   Area,
   AreaChart,
@@ -27,48 +28,66 @@ interface DensityChartProps {
  * Gráfico de densidade simples inspirado no seaborn,
  * aproximado a partir de um histograma normalizado.
  */
-export function DensityChart({
+function DensityChartComponent({
   samples,
   secondarySamples,
   xLabel,
 }: DensityChartProps) {
   if (!samples.length) return null;
 
-  const allSamples = secondarySamples?.length
-    ? [...samples, ...secondarySamples]
-    : samples;
+  const bins = useMemo(() => {
+    const allSamples = secondarySamples?.length
+      ? [...samples, ...secondarySamples]
+      : samples;
 
-  const min = Math.min(...allSamples);
-  const max = Math.max(...allSamples);
-  const binCount = 24;
-  const step = (max - min) / binCount || 1;
+    const min = Math.min(...allSamples);
+    const max = Math.max(...allSamples);
+    const binCount = 24;
+    const step = (max - min) / binCount || 1;
 
-  const bins = Array.from({ length: binCount }, (_, i) => {
-    const start = min + i * step;
-    const end = start + step;
-    const countA = samples.filter(
-      (v) => v >= start && (i === binCount - 1 ? v <= end : v < end),
-    ).length;
-    const density = countA / (samples.length * step);
-
-    let densityPrev: number | undefined;
-    if (secondarySamples?.length) {
-      const countB = secondarySamples.filter(
+    return Array.from({ length: binCount }, (_, i) => {
+      const start = min + i * step;
+      const end = start + step;
+      const countA = samples.filter(
         (v) => v >= start && (i === binCount - 1 ? v <= end : v < end),
       ).length;
-      densityPrev = countB / (secondarySamples.length * step);
-    }
+      const density = countA / (samples.length * step);
 
-    return {
-      x: (start + end) / 2,
-      density,
-      densityPrev,
-    };
-  });
+      let densityPrev: number | undefined;
+      if (secondarySamples?.length) {
+        const countB = secondarySamples.filter(
+          (v) => v >= start && (i === binCount - 1 ? v <= end : v < end),
+        ).length;
+        densityPrev = countB / (secondarySamples.length * step);
+      }
+
+      return {
+        x: (start + end) / 2,
+        density,
+        densityPrev,
+      };
+    });
+  }, [samples, secondarySamples]);
+
+  const hasSecondarySamples = useMemo(
+    () => Boolean(secondarySamples?.length),
+    [secondarySamples]
+  );
+
+  const tooltipFormatter = useCallback((value: number, name: string) => {
+    return [
+      `${(value as number).toFixed(2)}`,
+      name === "density" ? "Atual" : "Anterior",
+    ];
+  }, []);
+
+  const tooltipLabelFormatter = useCallback((label: number) => `${label.toFixed(1)}`, []);
+
+  const yAxisTickFormatter = useCallback((v: number) => v.toFixed(2), []);
 
   return (
     <ChartContainer>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={0}>
         <AreaChart data={bins} margin={{ top: 8, right: 16, bottom: 8, left: 0 }}>
           <DefaultCartesianGrid />
           <XAxis
@@ -81,17 +100,12 @@ export function DensityChart({
             tickLine={false}
             axisLine={false}
             tickMargin={4}
-            tickFormatter={(v) => v.toFixed(2)}
+            tickFormatter={yAxisTickFormatter}
           />
           <Tooltip
             contentStyle={{ color: "#000" }}
-            formatter={(value: number, name: string) =>
-              [
-                `${(value as number).toFixed(2)}`,
-                name === "density" ? "Atual" : "Anterior",
-              ]
-            }
-            labelFormatter={(label) => `${label.toFixed(1)}`}
+            formatter={tooltipFormatter}
+            labelFormatter={tooltipLabelFormatter}
           />
           <Area
             type="monotone"
@@ -100,9 +114,9 @@ export function DensityChart({
             strokeWidth={CHART_STROKE_WIDTH}
             fill={CHART_COLORS.secondary}
             fillOpacity={0.25}
-            isAnimationActive
+            isAnimationActive={false}
           />
-          {secondarySamples?.length ? (
+          {hasSecondarySamples ? (
             <Area
               type="monotone"
               dataKey="densityPrev"
@@ -110,10 +124,10 @@ export function DensityChart({
               strokeWidth={CHART_STROKE_WIDTH}
               fill={CHART_COLORS.primary}
               fillOpacity={0.18}
-              isAnimationActive
+              isAnimationActive={false}
             />
           ) : null}
-          {secondarySamples?.length ? (
+          {hasSecondarySamples ? (
             <Legend verticalAlign="top" height={24} />
           ) : null}
         </AreaChart>
@@ -124,5 +138,7 @@ export function DensityChart({
     </ChartContainer>
   );
 }
+
+export const DensityChart = memo(DensityChartComponent);
 
 

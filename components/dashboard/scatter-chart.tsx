@@ -62,7 +62,7 @@ export function AdvancedScatterChart({
 }: ScatterChartProps) {
   return (
     <ChartContainer className="h-64">
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="100%" height="100%" minHeight={0}>
         <ScatterChart margin={{ top: 8, right: 16, bottom: 24, left: 16 }}>
           <DefaultCartesianGrid />
           <XAxis
