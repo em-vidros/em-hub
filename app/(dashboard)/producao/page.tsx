@@ -71,7 +71,16 @@ export default async function ProducaoPage() {
           <AdvancedScatterChart
             data={
               scatter?.points?.length
-                ? scatter.points
+                ? scatter.points.map((p) => ({
+                    x: p.x,
+                    y: p.y,
+                    // Garante compatibilidade de tipo com o chart,
+                    // que espera `z` como número (sem `null`).
+                    z: p.z ?? 0.8,
+                    // Normaliza campos opcionais para remover `null`.
+                    label: p.label ?? undefined,
+                    category: p.category ?? undefined,
+                  }))
                 : data.linhas.map((linha) => ({
                     x: linha.oeePercentual,
                     y: linha.retrabalhoPercentual,

@@ -33,7 +33,6 @@ export default function ProcessosPage() {
               label: e.etapa,
               value: e.tempoMedio,
             }))}
-            yLabel="Tempo médio (h)"
             suffix="h"
           />
         </SectionCard>
@@ -46,7 +45,6 @@ export default function ProcessosPage() {
               label: g.processo,
               value: g.tempoPerdido,
             }))}
-            yLabel="Tempo perdido (h)"
             suffix="h"
           />
         </SectionCard>

@@ -16,6 +16,8 @@ interface HeatmapPoint {
   x: string;
   y: string;
   value: number;
+  deviation?: number;
+  is_outlier?: boolean;
 }
 
 interface HeatmapChartProps {

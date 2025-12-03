@@ -33,7 +33,6 @@ export default function ProdutosPage() {
               label: c.categoria,
               value: c.quantidade,
             }))}
-            yLabel="Quantidade de produtos"
           />
         </SectionCard>
         <SectionCard
@@ -45,7 +44,6 @@ export default function ProdutosPage() {
               label: p.produto,
               value: p.margem,
             }))}
-            yLabel="Margem (%)"
             suffix="%"
           />
         </SectionCard>

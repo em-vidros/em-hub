@@ -48,7 +48,6 @@ export default function CustosPage() {
               label: c.categoria,
               value: c.percentual,
             }))}
-            yLabel="Percentual (%)"
             suffix="%"
           />
         </SectionCard>

@@ -33,7 +33,6 @@ export default function EficienciaPage() {
               label: l.linha,
               value: l.oee,
             }))}
-            yLabel="OEE (%)"
             suffix="%"
           />
         </SectionCard>
@@ -46,7 +45,6 @@ export default function EficienciaPage() {
               label: t.turno,
               value: t.oee,
             }))}
-            yLabel="OEE (%)"
             suffix="%"
           />
         </SectionCard>

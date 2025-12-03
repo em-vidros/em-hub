@@ -33,7 +33,6 @@ export default function QualidadePage() {
               label: p.produto,
               value: p.taxaAprovacao,
             }))}
-            yLabel="Taxa de aprovação (%)"
             suffix="%"
           />
         </SectionCard>
@@ -46,7 +45,6 @@ export default function QualidadePage() {
               label: d.tipo,
               value: d.percentual,
             }))}
-            yLabel="Percentual (%)"
             suffix="%"
           />
         </SectionCard>

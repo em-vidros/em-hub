@@ -63,7 +63,6 @@ export default function RiscosPage() {
         >
           <CategoryBarChart
             data={riscosPorCategoriaData}
-            yLabel="Quantidade de riscos"
           />
         </SectionCard>
       </section>
