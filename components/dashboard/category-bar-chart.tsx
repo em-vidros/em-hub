@@ -20,10 +20,16 @@ import {
 
 interface CategoryBarChartProps {
   data: { label: string; value: number; secondaryValue?: number }[];
+
   suffix?: string;
+  yLabel?: string;
 }
 
-function CategoryBarChartComponent({ data, suffix }: CategoryBarChartProps) {
+function CategoryBarChartComponent({
+  data,
+  suffix,
+  yLabel,
+}: CategoryBarChartProps) {
   const hasSecondaryValue = useMemo(
     () => data.some((d) => typeof d.secondaryValue === "number"),
     [data]
@@ -68,6 +74,7 @@ function CategoryBarChartComponent({ data, suffix }: CategoryBarChartProps) {
             tickMargin={4}
             className="text-xs font-medium text-gray-500"
             tickFormatter={tickFormatter}
+            name={yLabel}
           />
           <Tooltip
             cursor={{ fill: "hsl(var(--muted)/0.5)" }}
