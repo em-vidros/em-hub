@@ -94,24 +94,12 @@ export default function DashboardLayout({
 
   return (
     <div className="bg-[#F0EFEA] h-screen overflow-hidden font-sans">
-      <div className="flex h-screen relative">
+      <div className="relative flex h-screen">
         <aside
           data-collapsed={isCollapsed ? "true" : "false"}
-          className="flex flex-col text-[11px] md:text-xs relative"
-          style={{
-            maxWidth: isCollapsed ? "4rem" : "14rem",
-            width: isCollapsed ? "4rem" : "14rem",
-            padding: isCollapsed ? "0.5rem" : "1rem",
-            flexShrink: 0,
-            overflow: "hidden",
-            willChange: "max-width, width, padding",
-            contain: "strict",
-            isolation: "isolate",
-            transform: "translate3d(0, 0, 0)",
-            WebkitTransform: "translate3d(0, 0, 0)",
-            transition: "max-width 180ms cubic-bezier(0.25, 0.1, 0.25, 1), width 180ms cubic-bezier(0.25, 0.1, 0.25, 1), padding 180ms cubic-bezier(0.25, 0.1, 0.25, 1)",
-            contentVisibility: "auto",
-          }}
+          className={`relative flex flex-col text-[11px] md:text-xs overflow-hidden transition-[width,max-width,padding] duration-200 ease-out ${
+            isCollapsed ? "w-16 max-w-16 px-2" : "w-56 max-w-56 px-4"
+          }`}
         >
         <div className={`mb-6 flex items-center ${isCollapsed ? "justify-center" : ""} px-2`}>
           <div className="flex items-center gap-3">
@@ -168,15 +156,25 @@ export default function DashboardLayout({
         </nav>
         
         <div className="mt-auto pt-4">
-          <div className={`flex items-center gap-2 rounded-sm border border-gray-100 bg-white/50 p-2 ${isCollapsed ? "justify-center" : ""}`}>
+          <div
+            className={`flex items-center gap-2 rounded-sm border border-gray-100 bg-white/50 p-2 ${
+              isCollapsed ? "justify-center" : ""
+            }`}
+          >
             <Avatar className="h-8 w-8 rounded-sm border border-gray-100 flex-shrink-0">
-              <AvatarFallback className="rounded-sm bg-gray-100 text-xs font-medium text-gray-500">EV</AvatarFallback>
-          </Avatar>
+              <AvatarFallback className="rounded-sm bg-gray-100 text-xs font-medium text-gray-500">
+                EV
+              </AvatarFallback>
+            </Avatar>
             {!isCollapsed && (
               <>
-                <div className="flex flex-1 flex-col overflow-hidden min-w-0">
-                  <span className="truncate text-xs font-medium text-gray-900">Gestor EM</span>
-                  <span className="truncate text-[10px] text-gray-500">admin@emvidros.com</span>
+                <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+                  <span className="truncate text-xs font-medium text-gray-900">
+                    Gestor EM
+                  </span>
+                  <span className="truncate text-[10px] text-gray-500">
+                    admin@emvidros.com
+                  </span>
                 </div>
                 <Button
                   type="button"
@@ -205,24 +203,17 @@ export default function DashboardLayout({
             )}
           </div>
         </div>
+
       </aside>
 
+      {/* Botão de colapso fixo na interseção sidebar/conteúdo, sempre acima do conteúdo */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
         aria-expanded={!isCollapsed}
-        className="absolute z-50 w-8 h-8 bg-white rounded-full border border-gray-100 shadow-md
-          flex items-center justify-center cursor-pointer hover:shadow-lg hover:scale-105
-          active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
-          style={{
-            top: "2.3rem",
-            left: isCollapsed ? "3.5rem" : "13.4rem",
-            transform: "translateY(0) translateZ(0)",
-            transition: "left 200ms cubic-bezier(0.4, 0, 0.2, 1)",
-            willChange: "left",
-            backfaceVisibility: "hidden",
-            WebkitTransform: "translateY(0) translateZ(0)",
-          }}
+        className={`absolute top-[2.3rem] z-50 flex h-8 w-8 -translate-y-0 transform items-center justify-center rounded-full border border-gray-100 bg-white shadow-md transition-[left,box-shadow,transform] duration-200 ease-out hover:scale-105 hover:shadow-lg active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 ${
+          isCollapsed ? "left-14" : "left-52"
+        }`}
       >
         {isCollapsed ? (
           <ChevronRight size={16} className="text-gray-600" />
@@ -231,7 +222,7 @@ export default function DashboardLayout({
         )}
       </button>
 
-      <main className="flex-1 flex flex-col min-w-0 overflow-hidden bg-white rounded-l-3xl shadow-[0_0_0_1px_rgba(0,0,0,0.05),0_10px_30px_rgba(0,0,0,0.08)] ml-2">
+      <main className="ml-2 flex min-w-0 flex-1 flex-col overflow-hidden rounded-l-3xl bg-white shadow-[0_0_0_1px_rgba(0,0,0,0.05),0_10px_30px_rgba(0,0,0,0.08)]">
         <header className="flex h-14 items-center justify-between border-b border-gray-100 bg-white px-6 rounded-tl-3xl">
           <div className="flex items-center gap-4">
             <h1 className="text-sm font-medium text-gray-900">Visão Geral</h1>

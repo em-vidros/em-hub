@@ -1,6 +1,6 @@
 import { KpiCard } from "@/components/dashboard/kpi-card";
-import { CategoryBarChart } from "@/components/dashboard/category-bar-chart";
 import { SectionCard } from "@/components/dashboard/section-card";
+import { DonutCategoryChart } from "@/components/dashboard/donut-category-chart";
 import {
   Table,
   TableBody,
@@ -28,7 +28,7 @@ export default function EstoquePage() {
           title="Estoque por categoria"
           subtitle="Nível atual vs. mínimo recomendado"
         >
-          <CategoryBarChart
+          <DonutCategoryChart
             data={data.estoquePorCategoria.map((c) => ({
               label: c.categoria,
               value: c.nivelAtual,

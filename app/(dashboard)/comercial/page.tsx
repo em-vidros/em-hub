@@ -15,9 +15,9 @@ import {
 } from "@/components/ui/table";
 import { getComercialMockData } from "@/data/comercial";
 import { getDistribuicaoTicket } from "@/lib/analytics-client";
+import { DonutCategoryChart } from "@/components/dashboard/donut-category-chart";
 
-// Usa full-route cache com revalidate para a maioria dos gráficos comerciais,
-// enquanto o histograma de tickets é servido via data cache com política própria.
+
 export const revalidate = 300;
 
 export default async function ComercialPage() {
@@ -55,7 +55,7 @@ export default async function ComercialPage() {
           title="Vendas por canal"
           subtitle="Distribuição da receita por canal"
         >
-          <CategoryBarChart
+          <DonutCategoryChart
             data={data.vendasPorCanal.map((canal) => ({
               label: canal.canal,
               value: canal.valor,
