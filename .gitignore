@@ -1,43 +1,138 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/.pnp
+# ============================================
+# Dependencies
+# ============================================
+node_modules/
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
-bun.lockb
-/.cursor
 
-# testing
-/coverage
+# ============================================
+# Web (Next.js Frontend)
+# ============================================
+web/node_modules/
+web/.next/
+web/out/
+web/.vercel
+web/.env*.local
+web/next-env.d.ts
+web/*.tsbuildinfo
 
-# next.js
-/.next/
-/out/
+# ============================================
+# API
+# ============================================
+api/venv/
+api/.venv/
+api/__pycache__/
+api/**/__pycache__/
+api/*.pyc
+api/*.pyo
+api/*.pyd
+api/.Python
+api/.env
+api/.env.local
+api/.pytest_cache/
+api/.coverage
+api/htmlcov/
+api/dist/
+api/build/
+api/*.egg-info/
 
-# production
-/build
+# ============================================
+# Warehouse (Data/ETL)
+# ============================================
+warehouse/.env
+warehouse/.env.local
+warehouse/__pycache__/
+warehouse/**/__pycache__/
+warehouse/*.pyc
+warehouse/.pytest_cache/
 
-# misc
-.DS_Store
-*.pem
+# ============================================
+# MLOps
+# ============================================
+mlops/.env
+mlops/.env.local
+mlops/__pycache__/
+mlops/**/__pycache__/
+mlops/*.pyc
+mlops/.pytest_cache/
+mlops/.mlflow/
+mlops/models/
+mlops/artifacts/
+mlops/experiments/
 
-# debug
+# ============================================
+# ML (Machine Learning)
+# ============================================
+ml/.env
+ml/.env.local
+ml/__pycache__/
+ml/**/__pycache__/
+ml/*.pyc
+ml/.pytest_cache/
+ml/models/
+ml/checkpoints/
+ml/.ipynb_checkpoints/
+ml/notebooks/.ipynb_checkpoints/
+
+# ============================================
+# Testing
+# ============================================
+coverage/
+.nyc_output/
+*.lcov
+
+# ============================================
+# Production
+# ============================================
+build/
+dist/
+*.log
+
+# ============================================
+# Debug
+# ============================================
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+bun-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ============================================
+# Environment files
+# ============================================
+.env
+.env*.local
+.env.production
+.env.development
 
-# vercel
-.vercel
+# ============================================
+# IDE & Editor
+# ============================================
+.cursor/
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# ============================================
+# OS
+# ============================================
+Thumbs.db
+.DS_Store
+*.pem
+
+# ============================================
+# Lock files (optional - descomente se quiser ignorar)
+# ============================================
+# package-lock.json
+# yarn.lock
+# bun.lockb

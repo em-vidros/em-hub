@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///home/henrique-emvidros/code/test-mcp/lib/auth.ts"],"sourcesContent":["export async function getIsAuthenticated(): Promise<boolean> {\n  if (typeof window === \"undefined\") {\n    return false;\n  }\n\n  return window.localStorage.getItem(\"emhub_auth\") === \"true\";\n}\n\nexport function clearAuthFlag() {\n  if (typeof window === \"undefined\") {\n    return;\n  }\n\n  window.localStorage.removeItem(\"emhub_auth\");\n}\n\n\n\n"],"names":[],"mappings":";;;;;;AAAO,eAAe;IACpB,wCAAmC;QACjC,OAAO;IACT;;;AAGF;AAEO,SAAS;IACd,wCAAmC;QACjC;IACF;;;AAGF"}},
+    {"offset": {"line": 48, "column": 0}, "map": {"version":3,"sources":["file:///home/henrique-emvidros/code/test-mcp/app/%28auth%29/login/page.tsx"],"sourcesContent":["import { redirect } from \"next/navigation\";\n\nimport { LoginForm } from \"@/components/auth/login-form\";\nimport { getIsAuthenticated } from \"@/lib/auth\";\n\nexport default async function LoginPage() {\n  const isAuthenticated = await getIsAuthenticated();\n\n  if (isAuthenticated) {\n    redirect(\"/diretoria\");\n  }\n\n  return (\n    <div className=\"flex min-h-screen items-center justify-center bg-muted\">\n      <LoginForm />\n    </div>\n  );\n}\n\n\n"],"names":[],"mappings":";;;;;AAAA;AAAA;AAEA;AACA;;;;;AAEe,eAAe;IAC5B,MAAM,kBAAkB,MAAM,IAAA,iIAAkB;IAEhD,IAAI,iBAAiB;QACnB,IAAA,iMAAQ,EAAC;IACX;IAEA,qBACE,8OAAC;QAAI,WAAU;kBACb,cAAA,8OAAC,iJAAS;;;;;;;;;;AAGhB"}}]
+}

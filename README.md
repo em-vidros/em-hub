@@ -1,89 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# EM Hub - EM Vidros
 
-This project uses [Bun](https://bun.sh) as the runtime and package manager for improved performance.
+Sistema de dashboard e analytics para gestão industrial da EM Vidros.
 
-## Getting Started
+## Estrutura do Projeto
 
-### Prerequisites
+O projeto está organizado em 5 módulos principais:
 
-Install Bun if you haven't already:
+### 📱 `web/`
+Frontend Next.js com dashboard e interface do usuário.
+- **Tecnologias**: Next.js 16, React 19, TypeScript, Tailwind CSS
+- **Estrutura**: 
+  - `app/` - Rotas e páginas do Next.js
+  - `components/` - Componentes React reutilizáveis
+  - `lib/` - Utilitários e clientes (incluindo analytics-client)
+  - `public/` - Assets estáticos
 
+**Executar:**
 ```bash
-curl -fsSL https://bun.sh/install | bash
-```
-
-### Installation
-
-Install dependencies:
-
-```bash
+cd web
 bun install
+bun dev
 ```
 
-### Development
+### 🔌 `api/`
+API FastAPI responsável por preparar dados analíticos para os gráficos do dashboard.
+- **Tecnologias**: FastAPI, Python 3.11, Pandas, NumPy
+- **Endpoints principais**:
+  - `GET /health`
+  - `GET /analytics/producao/oee-vs-retrabalho`
+  - `GET /analytics/producao/heatmap-turno-dia`
+  - `GET /analytics/comercial/distribuicao-ticket`
 
-Run the development server:
-
+**Executar:**
 ```bash
-bun run dev
+cd api
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 ```
 
-The application will be available at [http://localhost:3000](http://localhost:3000).
+### 📊 `warehouse/`
+Dados e processos de ETL (Extract, Transform, Load).
+- `data/` - Dados mockados e tipos TypeScript para desenvolvimento
 
-> **Note:** This project is configured to use Bun as the runtime. While you can use npm/yarn/pnpm for package management, Bun is the recommended runtime for optimal performance.
+### 🤖 `mlops/`
+Pipelines e ferramentas de MLOps (Machine Learning Operations).
+- Pipelines de CI/CD para modelos
+- Monitoramento de modelos em produção
+- Versionamento e deploy de modelos
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 🧠 `ml/`
+Modelos de machine learning e código relacionado.
+- Modelos de análise preditiva
+- Scripts de treinamento
+- Feature engineering
+- Notebooks de experimentação
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Desenvolvimento
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Pré-requisitos
+- Bun (runtime e package manager para o frontend)
+- Python 3.11+ (para a API)
+- Node.js 20+ (alternativa ao Bun)
 
-## Available Scripts
+### Configuração Inicial
 
-- `bun run dev` - Start the development server
-- `bun run build` - Build the application for production
-- `bun run start` - Start the production server
-- `bun run lint` - Run ESLint
+1. **Frontend (Web)**
+   ```bash
+   cd web
+   bun install
+   ```
 
-## Caching de analytics com Next 16
+2. **API**
+   ```bash
+   cd api
+   python -m venv venv
+   source venv/bin/activate  # ou `venv\Scripts\activate` no Windows
+   pip install -r requirements.txt
+   ```
 
-Este projeto utiliza o sistema de cache do Next 16 para os dados de analytics
-expostos pelo backend Python (`analytics-api`):
+### Executar em Desenvolvimento
 
-- O cliente de analytics em `lib/analytics-client.ts` encapsula `fetch` com:
-  - `cache: "force-cache"` + `next.revalidate` e `next.tags` para dados
-    agregados cacheáveis
-  - `cache: "no-store"` em desenvolvimento ou quando `revalidateSeconds <= 0`
-- Páginas de dashboard em `app/(dashboard)` usam full-route cache (via
-  `export const revalidate`) sempre que possível.
+Em terminais separados:
 
-### Variáveis de ambiente de revalidação
+1. **API** (porta 8000):
+   ```bash
+   cd api
+   uvicorn app.main:app --reload --port 8000
+   ```
 
-As políticas de revalidação são controladas por variáveis de ambiente
-(somente server-side):
+2. **Web** (porta 3000):
+   ```bash
+   cd web
+   bun dev
+   ```
 
-- `ANALYTICS_REVALIDATE_SECONDS_DEFAULT`:
-  - Tempo padrão de revalidação (segundos) para a maioria dos endpoints de
-    analytics
-  - Fallback: 300 segundos (5 minutos) em produção/stage
-  - Em `NODE_ENV=development`, o helper força `no-store` independentemente
-    do valor
-- `ANALYTICS_REVALIDATE_SECONDS_SLOW`:
-  - Tempo de revalidação para análises mais estáveis (ex.: histogramas)
-  - Fallback: 900 segundos (15 minutos) em produção/stage
+## Estrutura de Imports
 
-### Convenções de uso do cliente de analytics
+O projeto usa path aliases configurados no `tsconfig.json`:
+- `@/*` - Aponta para `web/*`
+- `@/warehouse/*` - Aponta para `warehouse/*`
 
-O helper principal é `fetchAnalytics` (usado internamente pelas funções
-exportadas em `lib/analytics-client.ts`):
+Exemplo:
+```typescript
+import { getProducaoMockData } from "@/warehouse/data/producao";
+import { KpiCard } from "@/components/dashboard/kpi-card";
+```
 
-- Em produção/stage:
-  - Endpoints agregados comuns usam `ANALYTICS_REVALIDATE_SECONDS_DEFAULT`
-  - Endpoints de análises estáveis (como distribuição de ticket) usam
-    `ANALYTICS_REVALIDATE_SECONDS_SLOW`
-- Em desenvolvimento:
-  - Sempre `no-store` para evitar confusão com cache.
+## Licença
 
-Futuramente, rotas ou processos de ETL poderão chamar `revalidateTag` com as
-tags definidas em `lib/analytics-client.ts` para invalidação seletiva dos
-caches quando novos dados forem carregados.
+Proprietário - EM Vidros
+

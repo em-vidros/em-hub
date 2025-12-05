@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 24, "column": 0}, "map": {"version":3,"sources":["file:///home/henrique-emvidros/code/test-mcp/app/%28auth%29/login/page.tsx"],"sourcesContent":["import { LoginForm } from \"@/components/auth/login-form\";\n \nexport default function LoginPage() {\n  return (\n    <div className=\"flex min-h-screen items-center justify-center bg-muted\">\n      <LoginForm />\n    </div>\n  );\n}\n\n\n"],"names":[],"mappings":";;;;;AAAA;;;AAEe,SAAS;IACtB,qBACE,8OAAC;QAAI,WAAU;kBACb,cAAA,8OAAC,iJAAS;;;;;;;;;;AAGhB"}}]
+}

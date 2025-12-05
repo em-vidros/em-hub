@@ -1,0 +1,21 @@
+{
+  "/(auth)/login/page": "/login",
+  "/(dashboard)/clientes/page": "/clientes",
+  "/(dashboard)/comercial/page": "/comercial",
+  "/(dashboard)/custos/page": "/custos",
+  "/(dashboard)/diretoria/page": "/diretoria",
+  "/(dashboard)/eficiencia/page": "/eficiencia",
+  "/(dashboard)/estoque/page": "/estoque",
+  "/(dashboard)/page": "/",
+  "/(dashboard)/performance/page": "/performance",
+  "/(dashboard)/processos/page": "/processos",
+  "/(dashboard)/producao/page": "/producao",
+  "/(dashboard)/produtos/page": "/produtos",
+  "/(dashboard)/qualidade/page": "/qualidade",
+  "/(dashboard)/riscos/page": "/riscos",
+  "/(dashboard)/seguranca/page": "/seguranca",
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/favicon.ico/route": "/favicon.ico",
+  "/page": "/"
+}
